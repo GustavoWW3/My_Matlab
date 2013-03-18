@@ -1,11 +1,11 @@
-function ww3_cont_gom(storm,track,modelnm,plotloc)
+function ww3_cont_pac(storm,track,modelnm,plotloc)
 %  map contour ww3 pacific
 
 project_in = 'mercator';
 %colposit = [0.2982 0.19 0.4500 0.0300];
 %legboxx=0.02;
 %legboxy=0.08;
-load([plotloc,'GOM-',track(9:end),'.mat']);
+load([plotloc,'PAC-',track(9:end),'.mat']);
 % open max mean file and read header information
 fid = fopen('Max-mean-ww3.dat','r');
 header = textscan(fid,'%f%f%f%f%f%f%f%f',1);
@@ -162,12 +162,12 @@ for qq = 1:8
     text(legboxx,legboxy,textstrt,'FontWeight','bold','FontSize',8, ...
         'units','normalized','BackgroundColor','w');
     
-    pos=get(gcf,'Position');
-    pos(3:4)=[649,664];
-%     set(gcf,'units','inches');
-%     set(gcf,'papersize',[11 9]);
-%     set(gcf,'paperposition',[1 1 9 7])
-    set(gcf,'Position',pos,'PaperPositionMode','auto');
+%    pos=get(gcf,'Position');
+%    pos(3:4)=[649,664];
+     set(gcf,'units','inches');
+     set(gcf,'papersize',[11 9]);
+     set(gcf,'paperposition',[1 1 9 7])
+%    set(gcf,'Position',pos,'PaperPositionMode','auto');
     %set(gcf,'renderer','painters');
     %print(gcf,'-dpdf','-r600',fileout1); 
     saveas(gcf,fileout1,'png')
