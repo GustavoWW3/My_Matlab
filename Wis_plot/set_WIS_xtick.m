@@ -1,8 +1,8 @@
-function set_WIS_xtick(minf,maxf)
+function set_WIS_xtick(minf,maxf,idnum)
 
 xlimmx = [minf,maxf];
 xtickdiff = maxf - minf;
 xticks = [minf:ceil(xtickdiff/12):maxf];
-xticklab = datestr(xticks,6);
+xticklab = datestr(xticks,idnum);
 set(gca,'xtick',xticks,'xticklabel',xticklab,'xlim', ...
     [minf maxf]);

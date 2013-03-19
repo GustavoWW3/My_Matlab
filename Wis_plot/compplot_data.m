@@ -1,5 +1,7 @@
 function compplot_WIS(id,stations,data,coord,tit1,track,saven)
 
+idnum = 6;
+
 f = figure('visible','off');
 %clf
 orient tall
@@ -49,7 +51,7 @@ for jj = 1:length(data)
     plot(data(jj).btime(ii),data(jj).bwvht(ii),'r.',data(jj).mtime, ...
         data(jj).mwvht,'b','Markersize',8,'linewidth',1);
     grid;
-    set_WIS_xtick(min(data(jj).mtime),max(data(jj).mtime));
+    set_WIS_xtick(min(data(jj).mtime),max(data(jj).mtime),idnum);
     ylabel(['H_{s} (m)'],'fontweight','bold');
     set_WIS_ytick(0,hsmaxt);
     if jj == 1

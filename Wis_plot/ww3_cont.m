@@ -1,11 +1,12 @@
-function ww3_cont(storm,track,modelnm,plotloc,bas)
+function ww3_cont(track,modelnm,plotloc,bas)
 %  map contour ww3 pacific
 
 project_in = 'mercator';
+storm = bas;
 %colposit = [0.2982 0.19 0.4500 0.0300];
 %legboxx=0.02;
 %legboxy=0.08;
-load([plotloc,base,'-',track(9:end),'.mat']);
+load([plotloc,bas,'-',track(9:end),'.mat']);
 % open max mean file and read header information
 fid = fopen('Max-mean-ww3.dat','r');
 header = textscan(fid,'%f%f%f%f%f%f%f%f',1);

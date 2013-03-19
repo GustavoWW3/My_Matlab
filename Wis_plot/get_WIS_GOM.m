@@ -14,18 +14,24 @@ loc{5} = [outfile,'/LEVEL3C2'];
 loc{6} = [outfile,'/LEVEL3E'];
 
 for zz = 1:length(loc)
-%     if ~exist(loc{zz},'dir')
-%         mkdir(loc{zz});
-%     end
+     if ~exist(loc{zz},'dir')
+         mkdir(loc{zz});
+     end
     cd (loc{zz})
-%     ii = strfind(loc{zz},'level');
-%    copyfile([get_file,'*-LEVEL',loc{zz}(ii+5:end),'-MMt.tgz'],'.');
-%    copyfile([get_file,'*-LEVEL',loc{zz}(ii+5:end),'-ST-onlns.tgz'],'.');
-    ww3_read_GOM
+    ii = strfind(loc{zz},'LEVEL');
+    copyfile([get_file,'LEVEL',loc{zz}(ii+5:end),'/*-LEVEL', ...
+        loc{zz}(ii+5:end),'-MMt.tgz'],'.');
+    fnamest = [get_file,'LEVEL',loc{zz}(ii+5:end),'/*-LEVEL', ...
+            loc{zz}(ii+5:end),'-ST-onlns.tgz'];
+    blah = dir(fnamest);
+    if ~isempty(blah)
+        copyfile(fnamest,'.');
+    end
+    ww3_read('GOM')
     
 end
 year = outfile(end-6:end-3);
 mon = outfile(end-1:end);
-archive_gom(year,mon);
+%archive_gom(year,mon);
 
 end

@@ -1,6 +1,7 @@
 function aa = conc_PAC_eval(buoy,level,yeard,mon1,mon2)
 %cc = 'X:\Atlantic\Evaluation\WW3\Validation\WIS\';
-cc = 'X:\Pacific\Production\Validation\WIS';
+%cc = 'X:\Pacific\Production\Validation\WIS';
+cc = '/mnt/CHL_WIS_1/Pacific/Production/Validation/WIS/';
 yearc = num2str(yeard(1));
 %yearmon = '2006-12';
 yearmon1 = [yearc,'-',mon1];
@@ -62,7 +63,7 @@ for jj = yeard(2):yeard(end)
         else
             yearmon = [yearc,monc];
         end
-        dirname = [cc,'\',yearmon1,'\'];
+        dirname = [cc,'/',yearmon1,'/'];
         fname = [dirname,'Pac','-',buoy,'-',yearmon,'.mat'];
         if exist(fname,'file')
             load(fname);
@@ -135,3 +136,5 @@ end
     else
         aa = 0;
     end
+    
+    

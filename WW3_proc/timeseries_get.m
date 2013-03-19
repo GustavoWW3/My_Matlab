@@ -55,6 +55,14 @@ end
 %         cd ../
 %     end
 % end
+cd([rdir,'/NDBC_CDIP/',year,'/',month{str2num(mon)}]);
+for zz = 1:size(stations,1)
+    fname=['n',num2str(stations(zz,1)),'_',year,'_',mon,'.onlns'];
+    if exist(fname,'file');
+       copyfile(fname,dirname);
+    end
+end
+
 % cd([rdir,'\CDIP\spc_',year]);
 % istats = buoy(:,4) ~= 999;
 % stats = buoy(istats,4);
@@ -81,11 +89,4 @@ end
 %     end
 %     end
 % end
-cd([rdir,'/NDBC_CDIP/',year,'/',month{str2num(mon)}]);
-for zz = 1:size(stations,1)
-    fname=['n',num2str(stations(zz,1)),'_',year,'_',mon,'.onlns'];
-    if exist(fname,'file');
-       copyfile(fname,dirname);
-    end
-end
 cd(dirname);
