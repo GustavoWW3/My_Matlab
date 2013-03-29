@@ -56,7 +56,7 @@ end
     track = [track,'-',level];
 
 % call contour plot of max mean
-ww3_cont(track,modelnm,plotloc,bas)
+%ww3_cont(track,modelnm,plotloc,bas)
 loc = pwd;
 
 % go out to raid and grab any validation data sets
@@ -88,7 +88,7 @@ for zz = 1:length(stats)
         continue
     end
     % load in plotting information 
-    eval(['[tit1,saven] = ',bas,'_names(buoyc,buoy,wis,track,level,res);']);
+    eval(['[tit1,saven] = ',bas,'_names(buoyc,buoy,wis,track,level,res)']);
     % call plotting routine for timeplots
     timeplot_WIS(buoyc,buoy,wis,coord,tit1,saven,'m');
     % calculate and plot statistics 

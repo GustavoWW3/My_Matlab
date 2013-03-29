@@ -18,6 +18,9 @@ dir1 = [mdir,'/',yearm,'/',level,'/'];
 cd(dir1);
 file = dir('*ST-onlns.tgz');
 if size(file,1) == 0
+    file = dir('*STNS_NDBC_onlns.tgz');
+end
+if size(file,1) == 0
     return
 end
 untar(file.name)

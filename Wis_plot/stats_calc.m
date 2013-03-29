@@ -1,4 +1,4 @@
-function stats_calc(buoyc,buoy,model,modelv,basin,textinc,unt)
+function stats_calc(buoyc,buoy,model,modelv,saven,unt)
 figure(1);
 clf
 tol=11;
@@ -28,7 +28,7 @@ AB=[buoy.time(kkB),buoy.wspd(kkB),buoy.wdir(kkB),buoy.wvht(kkB), ...
 AM=[model.time(kkM),model.wspd(kkM),model.wdir(kkM),model.wvht(kkM),...
     model.tpp(kkM),model.tm1(kkM),model.wavd(kkM)];
 
-saveout = ['timepair-',basin,'-',buoyc,'-',textinc];
+saveout = ['timepair-',saven,'-',buoyc];
 save(saveout,'AB','AM');
 
 [se,sd]=stats(AB,AM);
@@ -86,7 +86,7 @@ for ii = 1:3
         title(titchar2);
     end
 end
-ff3 = ['scat-',basin,'-',buoyc,'-',textinc,'-p1'];
+ff3 = ['scat-',saven,'-',buoyc,'-p1'];
 saveas(f,ff3,'png');
 close(f);clear f
 close all
@@ -248,7 +248,7 @@ if isempty(iwadg) == 0
     clear HC;
     %
 end
-ff2 = ['scat-',basin,'-',buoyc,'-',textinc,'-p2'];
+ff2 = ['scat-',saven,'-',buoyc,'-p2'];
 saveas(f,ff2,'png');
 close(f);clear f
 close all

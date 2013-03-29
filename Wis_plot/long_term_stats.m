@@ -1,4 +1,4 @@
-function long_term_stats(yearmon1,yearmon2,basin,model,grid)
+function long_term_stats(yearmon1,yearmon2,basin,model,grd)
 
 clf;close all
 
@@ -9,10 +9,15 @@ yearmon2c = num2str(yearmon2);
 year2 = yearmon2c(1:4);mon2 = yearmon2c(5:6);
 
 mloc = ['/home/thesser1/My_Matlab/Wis_plot/',basin,'/'];
-eval(['[tit,outdir] = ',basin,'_longterm_names(year1,year2,model)']);
+eval(['[tit,outdir] = ',basin,'_longterm_names(year1,year2,model,grd)']);
 
-load([mloc,basin,'-plot.mat']);
-load([mloc,basin,'-buoy.mat']);
+load([mloc,basin,'-',grd,'-plot.mat']);
+load([mloc,basin,'-',grd,'-buoy.mat']);
+outdirl = [outdir,'/',grd];
+if ~exist(outdirl,'dir')
+    mkdir(outdirl);
+end
+
 stype = {'bx-';'ro-';'g+-';'k*-.';'md-';'cs-'};
 itype = {'Bias';'RMSE';'SI'};
 btype = {'H_{s} (m)';'WS (m/s)';'T_{m} (s)'};
@@ -30,7 +35,7 @@ for jj = 1:size(compend,1)
        continue
     end
     for zz = 1:size(compend,2)
-        eval(['aa{jj,zz} = conc_',basin,'_eval(num2str(compend(jj,zz)),grid,yeard,mon1,mon2);']);
+        eval(['aa{jj,zz} = conc_',basin,'_eval(num2str(compend(jj,zz)),grd,yeard,mon1,mon2);']);
         if isstruct(aa{jj,zz})
             ii = buoy(:,3) == compend(jj,zz);
             if isempty(buoy(ii,1))
@@ -159,7 +164,7 @@ for jj = 1:size(compend,1)
                 end
             end
             xlabel('Time (Month Year)','fontweight','bold')
-            outname = [outdir,basin,'-stats-cont',num2str(jj),'-',type{rr}, ...
+            outname = [outdirl,'/',basin,'-',grd,'-stats-cont',num2str(jj),'-',type{rr}, ...
                 '-',num2str(yearmon1),'-',num2str(yearmon2)];
             saveas(gcf,outname,'png');
         end

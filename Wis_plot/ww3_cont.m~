@@ -32,7 +32,7 @@ else
     xlone = header{8};
     nlon = (xlone - xlonw)/resd + 1;
     nlat = (xlatn - xlats)/resd + 1;
-    qr = [3,5,7];
+    qr = [1,2,5,6,9,10,13,14];
 end
     
 
@@ -72,17 +72,13 @@ filename{8} ='U10TOT';
 %read max and mean wave height information for total, windsea, and swell
 for qq = 1:8
     if strcmp(fname,'ww3')
+        if ismember(qr==qq)
         for jj = 1:nlat
             data = fscanf(fid,'%f',nlon);
             hs{qq}(:,jj) = data;
         end
         hs{qq} = hs{qq}';
     else 
-        if ismember(qq,qr)
-           for pdum = 1:2
-               data = fscanf(fid,'%10f',[nlon,nlat]);
-           end
-        end
         data = fscanf(fid,'%10f',[nlon,nlat]);
         hs{qq} = flipud(data');
          
