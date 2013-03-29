@@ -1,9 +1,8 @@
 function ww3_alt(alt_data,loc)
 
 %fname = ['E:\Pacific\WW3\ST4-New\',yearmon];
-[nlat,nlon] = size(alt_data.alt_data(1,1).Hs_grid);
 cd(loc)
-[mod_out,mod_bias,mod_rmse,alt_out,blah,yearmon] = alt_stat1(alt_data,nlon,nlat);
+[mod_out,mod_bias,mod_rmse,alt_out,blah,yearmon] = alt_stat1(alt_data);
 %filed = [yearmon(1:4),yearmon(6:7),'_WIS_PacWW3_OWI_ST4-hss.tgz']
 % fname = ls('*-hss.tgz');
 % untar(fname)
@@ -69,15 +68,16 @@ cd(loc)
 %        clear qq
 %     end
 % end
-[mod_bias2,mod_rmse2,alt_mean,mod_si2] = alt_stat2(mod_bias{1},mod_rmse{1}, ...
-    alt_out{1});
-X = alt_data.alt_data(1,1).long;Y = alt_data.alt_data(1,1).latg;
+for qq = 1:size(alt_data,2)
+[mod_bias2,mod_rmse2,alt_mean,mod_si2] = alt_stat2(mod_bias{qq},mod_rmse{qq}, ...
+    alt_out{qq});
+[X Y] = meshgrid(110:0.5:300,-64:0.5:64.0);
 
 % plot mean statistics
     figure(1)
      orient('tall')
     subplot(2,4,1:2)
-    m_proj('mercator','long',[min(X) max(X)],'lat',[min(Y) max(Y)]);
+    m_proj('mercator','long',[110 300],'lat',[-64 64]);
     [CMCF,hh2]=m_contourf(X,Y,alt_mean,15);
     hold on
     caxis([0 max(max(alt_mean))]);
@@ -100,7 +100,7 @@ X = alt_data.alt_data(1,1).long;Y = alt_data.alt_data(1,1).latg;
     title('Mean H_{mo} (m)','fontweight','bold')
 
     subplot(2,4,3:4)
-    m_proj('mercator','long',[min(X) max(X)],'lat',[min(Y) max(Y)]);
+    m_proj('mercator','long',[110 300],'lat',[-64 64]);
     [CMCF,hh2]=m_contourf(X,Y,mod_bias2,15);
     hold on
     caxis([-1.0 1.0])
@@ -123,10 +123,10 @@ X = alt_data.alt_data(1,1).long;Y = alt_data.alt_data(1,1).latg;
     title('H_{mo} Bias','fontweight','bold');
     
     subplot(2,4,5:6)
-    m_proj('mercator','long',[min(X) max(X)],'lat',[min(Y) max(Y)]);
+    m_proj('mercator','long',[110 300],'lat',[-64 64]);
     [CMCF,hh2]=m_contourf(X,Y,mod_rmse2,15);
     hold on
-    caxis([0 4])%max(max(mod_rmse2))])
+    caxis([0 max(max(mod_rmse2))])%max(max(mod_rmse2))])
     set(hh2,'EdgeColor','none');
     m_gshhs_i('patch',[0 0.5 0],'EdgeColor','k');
     xlabel('Longitude','FontWeight','bold')
@@ -146,10 +146,10 @@ X = alt_data.alt_data(1,1).long;Y = alt_data.alt_data(1,1).latg;
     title('H_{mo} RMSE','fontweight','bold');
     
     subplot(2,4,7:8)
-    m_proj('mercator','long',[min(X) max(X)],'lat',[min(Y) max(Y)]);
+    m_proj('mercator','long',[110 300],'lat',[-64 64]);
     [CMCF,hh2]=m_contourf(X,Y,mod_si2,15);
     hold on
-    caxis([0 30])
+    caxis([0 50])
     set(hh2,'EdgeColor','none');
     m_gshhs_i('patch',[0 0.5 0],'EdgeColor','k');
     xlabel('Longitude','FontWeight','bold')
@@ -173,10 +173,10 @@ X = alt_data.alt_data(1,1).long;Y = alt_data.alt_data(1,1).latg;
 %    set(gcf,'PaperPositionMode','manual');
 %    set(gcf,'papersize',[11 8.5]);
 %    set(gcf,'Position',[0.5 0.5 10 7.5]);
-    fileout = ['WW3-Topex-stats-',yearmon];
+    fileout = ['WAM-',alt_data(qq).sat,'-stats-',yearmon];
     print(gcf,'-dpng','-r500',fileout);
     clf
-
+end
 %bb = find(blah > max(blah)-max(blah)*0.2);
 for qq = 1:size(alt_data,2)
 hh = find(blah{qq} > 12.0);
@@ -280,7 +280,7 @@ for ii = 1:nh
     grid
     ylim([0 maxhs+1]);
     clear hh2 ttt ttt2 hh3
-    legend('Altimeter','WW3','location','best')
+    legend('Altimeter','WAM','location','best')
     xlabel('Longitude','fontweight','bold');
     ylabel('H_{mo} (m)','fontweight','bold');
     title([alt_data(qq).sat,' ',alt_data(qq).alt_data(hh(ii)).stime],'fontweight','bold')
