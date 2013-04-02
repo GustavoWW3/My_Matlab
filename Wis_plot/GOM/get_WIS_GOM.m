@@ -1,7 +1,7 @@
 function get_WIS_GOM(outfile)
 
 %get_file = ['X:\Atlantic\Evaluation\WW3\Model\',outfile(end-6:end),'\'];
-get_file = ['/mnt/CHL_WIS_1/GulfofMexico/Evaluation/WAM451C/Model/',outfile(end-6:end),'/'];
+get_file = ['/mnt/CHL_WIS_1/GOM/Evaluation/WW3/Model/',outfile(end-6:end),'/'];
 if ~exist(outfile,'dir')
     mkdir(outfile);
 end
@@ -29,17 +29,17 @@ for zz = 1:length(locd)
     ii = strfind(loc{zz},'LEVEL');
     %copyfile([get_file,'LEVEL',loc{zz}(ii+5:end),'/*-LEVEL', ...
     %    loc{zz}(ii+5:end),'-MMt.tgz'],'.');
-    copyfile([get_file,'/*L',loc{zz+1}(ii+5:end),'*MMd.tgz'],'.');
+    %copyfile([get_file,'/*L',loc{zz+1}(ii+5:end),'*MMd.tgz'],'.');
     %fnamest = [get_file,'LEVEL',loc{zz}(ii+5:end),'/*-LEVEL', ...
     %        loc{zz}(ii+5:end),'-ST-onlns.tgz'];
     fnamest = [get_file,'/*L',loc{zz+1}(ii+5:end),'*onlns.tgz'];
     blah = dir(fnamest);
     if ~isempty(blah)
-        copyfile(fnamest,'.');
+    %    copyfile(fnamest,'.');
     end
     ww3_read('GOM',year,mon)
     
 end
-archive_gom(year,mon);
-system(['rm -rf ',outfile]);
+%archive_gom(year,mon);
+%system(['rm -rf ',outfile]);
 end

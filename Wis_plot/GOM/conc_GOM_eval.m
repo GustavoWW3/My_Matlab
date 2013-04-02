@@ -1,9 +1,9 @@
-function aa = conc_GOM_eval(buoy,level,yeard,mon1,mon2)
+function aa = conc_GOM_eval(buoy,model,level,yeard,mon1,mon2)
 bas = 'GOM';
 if isunix
-    cc = '/mnt/CHL_WIS_1/GOM/Evaluation/WW3/Validation/WIS/';
+    cc = ['/mnt/CHL_WIS_1/GOM/Evaluation/',model,'/Validation/WIS/'];
 else
-    cc = 'X:\GOM\Evaluation\WW3\Validation\WIS\';
+    cc = ['X:\GOM\Evaluation\',model,'\Validation\WIS\'];
 end
 yearc = num2str(yeard(1));
 yearmon = [yearc,'-',mon1];

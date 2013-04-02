@@ -23,7 +23,7 @@ ffn = dir('Max*.dat');
 fid = fopen(ffn.name);
 data = textscan(fid,'%f%f%f%f%f%f%f%f',1);
 % identify lat and lon coordinates from header
-if strcmp(ffn.name,'ww3')
+if ~isempty(strfind(ffn.name,'ww3'))
     lonw = data{3};
     lone = data{4};
     nlon = data{5};

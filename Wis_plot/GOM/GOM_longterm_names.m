@@ -21,7 +21,7 @@ tit4 = ['Time = ',year1,' - ',year2];
 tit = {tit1;tit2;tit3;tit4};
 
 % Change directory listing for saving longterm stats
-outdir = ['/mnt/CHL_WIS_1/GOM/Evaluation/WW3/Longterm/'];
+outdir = ['/mnt/CHL_WIS_1/GOM/Evaluation/',model,'/Longterm/'];
 if ~exist(outdir,'dir');
     mkdir(outdir);
 end

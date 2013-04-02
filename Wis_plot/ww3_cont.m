@@ -11,7 +11,7 @@ load([plotloc,bas,'-',track(9:end),'.mat']);
 fname = dir('Max*.dat');
 fid = fopen(fname.name,'r');
 header = textscan(fid,'%f%f%f%f%f%f%f%f',1);
-if strcmp(fname,'ww3')
+if ~isempty(strfind(fname.name,'ww3'))
     time1 = header{1};
     time2 = header{2};
     xlonw = header{3};
@@ -71,7 +71,7 @@ filename{8} ='U10TOT';
 %units = 'm';
 %read max and mean wave height information for total, windsea, and swell
 for qq = 1:8
-    if strcmp(fname,'ww3')
+    if ~isempty(strfind(fname.name,'ww3'))
         for jj = 1:nlat
             data = fscanf(fid,'%f',nlon);
             hs{qq}(:,jj) = data;

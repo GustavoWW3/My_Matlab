@@ -35,7 +35,7 @@ for jj = 1:size(compend,1)
        continue
     end
     for zz = 1:size(compend,2)
-        eval(['aa{jj,zz} = conc_',basin,'_eval(num2str(compend(jj,zz)),grd,yeard,mon1,mon2);']);
+        eval(['aa{jj,zz} = conc_',basin,'_eval(num2str(compend(jj,zz)),model,grd,yeard,mon1,mon2);']);
         if isstruct(aa{jj,zz})
             ii = buoy(:,3) == compend(jj,zz);
             if isempty(buoy(ii,1))
@@ -164,7 +164,7 @@ for jj = 1:size(compend,1)
                 end
             end
             xlabel('Time (Month Year)','fontweight','bold')
-            outname = [outdirl,'/',basin,'-',grd,'-stats-cont',num2str(jj),'-',type{rr}, ...
+            outname = [outdirl,'/',basin,'-',grd,'-',model,'-stats-cont',num2str(jj),'-',type{rr}, ...
                 '-',num2str(yearmon1),'-',num2str(yearmon2)];
             saveas(gcf,outname,'png');
         end
