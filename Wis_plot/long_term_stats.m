@@ -11,11 +11,16 @@ year2 = yearmon2c(1:4);mon2 = yearmon2c(5:6);
 mloc = ['/home/thesser1/My_Matlab/Wis_plot/',basin,'/'];
 eval(['[tit,outdir] = ',basin,'_longterm_names(year1,year2,model,grd)']);
 
-load([mloc,basin,'-',grd,'-plot.mat']);
-load([mloc,basin,'-',grd,'-buoy.mat']);
-outdirl = [outdir,'/',grd];
-if ~exist(outdirl,'dir')
-    mkdir(outdirl);
+if ~strcmp(grd,'')
+    load([mloc,basin,'-',grd,'-plot.mat']);
+    load([mloc,basin,'-',grd,'-buoy.mat']);
+    outdirl = [outdir,'/',grd];
+    if ~exist(outdirl,'dir')
+        mkdir(outdirl);
+    end
+else
+    load([mloc,basin,'-plot.mat']);
+    load([mloc,basin,'-buoy.mat']);
 end
 
 stype = {'bx-';'ro-';'g+-';'k*-.';'md-';'cs-'};
@@ -164,8 +169,13 @@ for jj = 1:size(compend,1)
                 end
             end
             xlabel('Time (Month Year)','fontweight','bold')
-            outname = [outdirl,'/',basin,'-',grd,'-',model,'-stats-cont',num2str(jj),'-',type{rr}, ...
-                '-',num2str(yearmon1),'-',num2str(yearmon2)];
+            if ~strcmp(grd,'')
+                outname = [outdirl,'/',basin,'-',grd,'-',model,'-stats-cont',num2str(jj),'-',type{rr}, ...
+                    '-',num2str(yearmon1),'-',num2str(yearmon2)];
+            else
+                outname = [outdir,'/',basin,'-',model,'-stats-cont',num2str(jj),'-',type{rr}, ...
+                    '-',num2str(yearmon1),'-',num2str(yearmon2)];
+            end
             saveas(gcf,outname,'png');
         end
     end

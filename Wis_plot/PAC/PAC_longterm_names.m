@@ -1,4 +1,4 @@
-function [tit,outdir] = PAC_longterm_names(year1,year2,model) 
+function [tit,outdir] = PAC_longterm_names(year1,year2,model,grd) 
 
 gridc = '';
 tit1 = ['Pacific Basin Longterm Analysis'];
