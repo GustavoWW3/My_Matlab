@@ -1,59 +1,71 @@
-function aa = conc_ATL_eval(buoy,level,yeard,mon1,mon2)
-%cc = 'X:\Atlantic\Evaluation\WW3\Validation\WIS\';
-cc = 'X:\Atlantic\Evaluation\WAMCY451C\';
-yearc = num2str(yeard(1));
-%yearmon = '2006-12';
-yearmon = [yearc,'_',mon1];
-%dirname = [cc,yearmon,'\',level];
-dirname = [cc,yearc,'\',yearmon,'\',level,'\validation'];
-lev = level(6:end);
-%fname = [dirname,'\timepair-ATL-',buoy,'-',level,'.mat'];
-fname = [dirname,'\tpair-ATL',lev,'-',yearmon,'-',buoy,'.mat'];
-if exist(fname,'file')
-    load(fname);
-    aabuoy = AB;
-    aamod = AM;
-    [se,sd]=stats(AB,AM);
-    wndsst = se(1,:);
-    wvhtst = se(2,:);
-    tppst = se(3,:);
-    tmmst = se(4,:);
-    timest = AM(1,1);
-    wvhtme = mean(AB(AB(:,4)>=0,4));
-    wspdme = mean(AB(AB(:,2)>=0,2));
-    tmmme = mean(AB(AB(:,6)>=0,6));
+function aa = conc_GOM_eval(buoy,model,level,yeard,mon1,mon2)
+bas = 'ATL';
+if isunix
+    cc = ['/mnt/CHL_WIS_1/Atlantic/Evaluation/',model,'/Validation/WIS/'];
 else
-    timest = datenum(yeard(1),str2num(mon1),01,01,00,00);
-    AB = NaN([1 7]);AM = NaN([1 7]);
-    AB(1,1) = timest;AM(1,1) = timest;
-    aabuoy = AB;
-    aamod = AM;
-    wndsst = NaN([1 18]);
-    wvhtst = NaN([1 18]);
-    tppst = NaN([1 18]);
-    tmmst = NaN([1 18]);
-    wvhtme = NaN;
-    wspdme = NaN;
-    tmmme = NaN;
+    cc = ['X:\Atlantic\Evaluation\',model,'\Validation\WIS\'];
 end
-for jj = yeard(2):yeard(end)
-    mone = 12;
+yearc = num2str(yeard(1));
+yearmon = [yearc,'-',mon1];
+if isunix
+    dirname = [cc,'/',yearmon,'/',level];
+    fname = [dirname,'/timepair-',bas,'-',yearmon,'-',level,'-',buoy,'.mat'];
+else
+    dirname = [cc,'\',yearmon,'\',level];
+    fname = [dirname,'\timepair-',bas,'-',yearmon,'-',level,'-',buoy,'.mat'];
+end
+    lev = level(6:end);
+
+% if exist(fname,'file')
+%     load(fname);
+%     aabuoy = AB;
+%     aamod = AM;
+%     [se,sd]=stats(AB,AM);
+%     wndsst = se(1,:);
+%     wvhtst = se(2,:);
+%     tppst = se(3,:);
+%     tmmst = se(4,:);
+%     timest = AM(1,1);
+%     wvhtme = mean(AB(AB(:,4)>=0,4));
+%     wspdme = mean(AB(AB(:,2)>=0,2));
+%     tmmme = mean(AB(AB(:,6)>=0,6));
+% else
+%     timest = datenum(yeard(1),str2num(mon1),01,01,00,00);
+%     AB = NaN([1 7]);AM = NaN([1 7]);
+%     AB(1,1) = timest;AM(1,1) = timest;
+%     aabuoy = AB;
+%     aamod = AM;
+%     wndsst = NaN([1 18]);
+%     wvhtst = NaN([1 18]);
+%     tppst = NaN([1 18]);
+%     tmmst = NaN([1 18]);
+%     wvhtme = NaN;
+%     wspdme = NaN;
+%     tmmme = NaN;
+% end
+for jj = yeard(1):yeard(end)
+    mone = 12;mons = 1;
+    if jj == yeard(1)
+        mons = str2num(mon1);
+    end
     if jj == yeard(end)
         mone = str2num(mon2);
     end
-    for ii = 1:mone
+    for ii = mons:mone
         if ii < 10
             monc = ['0',num2str(ii)];
         else
             monc = num2str(ii);
         end
-        %yearmon = [num2str(jj),'-',monc];
-        %dirname = [cc,yearmon,'\',level];
-        %fname = [dirname,'\timepair-ATL-',buoy,'-',level,'.mat'];
         yearc = num2str(jj);
-        yearmon = [num2str(jj),'_',monc];
-        dirname = [cc,'\',yearc,'\',yearmon,'\',level,'\validation'];
-        fname = [dirname,'\tpair-ATL',lev,'-',yearmon,'-',buoy,'.mat'];
+        yearmon = [yearc,'-',monc];
+        if isunix
+            dirname = [cc,'/',yearmon,'/',level];
+            fname = [dirname,'/timepair-',bas,'-',yearmon,'-',level,'-',buoy,'.mat'];
+        else
+            dirname = [cc,'\',yearmon,'\',level];
+            fname = [dirname,'\timepair-',bas,'-',yearmon,'-',level,'-',buoy,'.mat'];
+        end
         if exist(fname,'file')
             load(fname);
             if isempty(AB)
@@ -98,6 +110,20 @@ for jj = yeard(2):yeard(end)
                 tmmme = mean(AB(AB(:,6)>=0,6));
             end
         else
+            if ~exist('aabuoy','var')
+                timest = datenum(yeard(1),str2num(mon1),01,01,00,00);
+                AB = NaN([1 7]);AM = NaN([1 7]);
+                AB(1,1) = timest;AM(1,1) = timest;
+                aabuoy = AB;
+                aamod = AM;
+                wndsst = NaN([1 18]);
+                wvhtst = NaN([1 18]);
+                tppst = NaN([1 18]);
+                tmmst = NaN([1 18]);
+                wvhtme = NaN;
+                wspdme = NaN;
+                tmmme = NaN;
+            else
                 AB = NaN([1,size(aabuoy,2)]);
                 AM = NaN([1,size(aamod,2)]);
                 AB(1,1) = aabuoy(end,1) + 1;
@@ -112,6 +138,7 @@ for jj = yeard(2):yeard(end)
                 wvhtme = vertcat(wvhtme,mean(AB(AB(:,4)>=0,4)));
                 wspdme = vertcat(wspdme,mean(AB(AB(:,2)>=0,2)));
                 tmmme = vertcat(tmmme,mean(AB(AB(:,6)>=0,6)));
+            end
         end
     end
 end
