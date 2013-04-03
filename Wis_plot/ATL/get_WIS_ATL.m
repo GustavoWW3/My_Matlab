@@ -34,6 +34,6 @@ for zz = 1:length(loc)
     wis_read('ATL',year,mon)
     
 end
-archive_atl(year,mon);
-system(['rm -rf ',outfile]);
+%archive_atl(year,mon);
+%system(['rm -rf ',outfile]);
 end
