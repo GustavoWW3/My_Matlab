@@ -130,6 +130,7 @@ for qq = 1:8
     f = figure('visible','off');
     set(f,'DefaultTextFontSize',10,'DefaultAxesFontSize',10);
     set(f,'DefaultAxesFontName','Helvetica','DefaultTextFontName','Helvetica');
+    set(f,'DefaultFigureRenderer','zbuffer');
     %f = figure('visible','on');
     colormap(cmap)
     m_proj(project_in,'long',[xlonw xlone],'lat',[xlats xlatn]);
