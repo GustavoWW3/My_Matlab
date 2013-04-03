@@ -127,8 +127,8 @@ for qq = 1:8
       [imax jmax] = find(hs{qq} == RANGMM);
       
     load cmap.mat
-    %f = figure('visible','off');
-    f = figure('visible','on');
+    f = figure('visible','off');
+    %f = figure('visible','on');
     colormap(cmap)
     m_proj(project_in,'long',[xlonw xlone],'lat',[xlats xlatn]);
 
@@ -216,7 +216,7 @@ for qq = 1:8
 %    print(f,'-dpng','-r600',fileout1); 
     saveas(f,fileout1,'png')
     %clf;clear f
-    clear f
+    close(f);clear f
 end
 fclose(fid);
 % pdfn = dir('*.pdf');
