@@ -128,9 +128,8 @@ for qq = 1:8
       
     load cmap.mat
     f = figure('visible','off');
-    set(f,'DefaultTextFontSize',10,'DefaultAxesFontSize',10);
-    set(f,'DefaultAxesFontName','Helvetica','DefaultTextFontName','Helvetica');
-    set(f,'DefaultFigureRenderer','zbuffer');
+    %set(f,'TextFontSize',10,'AxesFontSize',10);
+    %set(f,'AxesFontName','Helvetica','TextFontName','Helvetica');
     %f = figure('visible','on');
     colormap(cmap)
     m_proj(project_in,'long',[xlonw xlone],'lat',[xlats xlatn]);
