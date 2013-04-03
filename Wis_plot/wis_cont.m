@@ -1,5 +1,5 @@
-function ww3_cont(track,modelnm,plotloc,bas)
-%  map contour ww3 pacific
+function wis_cont(track,modelnm,plotloc,bas)
+%  map contour
 
 project_in = 'mercator';
 storm = bas;
@@ -119,6 +119,7 @@ for qq = 1:8
             if (hs{qq}(jj,ii) >= 0.0 && hs{qq}(jj,ii) <= v(8))
                 hs{qq}(jj,ii) = v(8);
             end
+
         end
     end
     
@@ -126,8 +127,8 @@ for qq = 1:8
       [imax jmax] = find(hs{qq} == RANGMM);
       
     load cmap.mat
-    f = figure('visible','off');
-    %f = figure('visible','on');
+    %f = figure('visible','off');
+    f = figure('visible','on');
     colormap(cmap)
     m_proj(project_in,'long',[xlonw xlone],'lat',[xlats xlatn]);
 
@@ -136,9 +137,6 @@ for qq = 1:8
     caxis([0,RANGMM]);
     set(hh,'EdgeColor','none');
     m_gshhs_i('patch',[.0 .5 .0],'edgecolor','y');
-    set(f,'units','inches');
-    set(f,'Position',[0 0 6.75 7.50]);
-    %set(hh,'Position',[0.13 0.17 0.775 0.725]);
     xlabel('Longitude','FontWeight','bold')
     ylabel('Latitude','FontWeight','bold')
     m_grid('box','fancy','tickdir','in','FontWeight','Bold');
@@ -184,12 +182,12 @@ for qq = 1:8
     
     
     hcolmax=colorbar('horizontal');
-    set(hcolmax,'Position',colposit,'FontSize',8)
+    set(hcolmax,'Position',colposit,'FontSize',10,'fontweight','bold')
     textcolbr=[titlefld1,'  [',unts,']'];
     text(colortext(1),colortext(2),textcolbr,'FontWeight','bold', ...
-        'FontSize',8,'units','normalized');
-    title(titlnam1,'FontWeight','bold');
-    text(legboxx,legboxy,textstrt,'FontWeight','bold','FontSize',8, ...
+        'FontSize',10,'units','normalized');
+    title(titlnam1,'FontWeight','bold','fontsize',10);
+    text(legboxx,legboxy,textstrt,'FontWeight','bold','FontSize',10, ...
         'units','normalized','BackgroundColor','w');
     
 %    pos=get(f,'Position');
@@ -197,8 +195,11 @@ for qq = 1:8
 %    pos(3:4) = [1081 1106];
 %    pos(3:4) = [1298 1328];
 %     set(f,'units','inches');
+     set(f,'units','inches');
+     %set(f,'Position',[0 0 6.75 7.50]);
+     set(f,'Position',figpos);
      set(f,'papersize',[9 11]);
-     set(f,'PaperPosition',[0 0 6.75 7.50]);
+     set(f,'PaperPosition',figpos);
 %     set(f,'paperposition',[0.48 1.65 7.76 7.92])
 %     set(f,'paperposition',[1 1 15 18]);
 %     set(f,'units','inches','Position',[0 0 7.21 7.37])
@@ -215,7 +216,7 @@ for qq = 1:8
 %    print(f,'-dpng','-r600',fileout1); 
     saveas(f,fileout1,'png')
     %clf;clear f
-    close(f);clear f
+    clear f
 end
 fclose(fid);
 % pdfn = dir('*.pdf');

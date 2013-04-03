@@ -37,7 +37,7 @@ for zz = 1:length(locd)
     if ~isempty(blah)
     %    copyfile(fnamest,'.');
     end
-    ww3_read('GOM',year,mon)
+    wis_read('GOM',year,mon)
     
 end
 %archive_gom(year,mon);

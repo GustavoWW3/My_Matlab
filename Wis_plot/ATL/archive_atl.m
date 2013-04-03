@@ -1,10 +1,10 @@
 function archive_atl(year,mon)
 
 yeardmon = [year,'-',mon];
-BASE = 'C:\WIS\Atlantic\WW3_multi';
-BASEA = 'X:\Atlantic\Evaluation\WW3';
-arcf = [BASEA,'\Figures\',yeardmon];
-out = [BASE,'\',yeardmon];
+BASE = '/home/thesser1/ATL/model';
+BASEA = '/mnt/CHL_WIS_1/Atlantic/Evaluation/WW3';
+arcf = [BASEA,'/Figures/',yeardmon];
+out = [BASE,'/',yeardmon];
 
 
 if ~exist(arcf,'dir')
@@ -19,9 +19,11 @@ loc{5} = 'level3S1';
 loc{6} = 'level3S2';
 
 for zz = 1:6
-    val = [out,'\',loc{zz},'\Validation\'];
-    arcv = [BASEA,'\Validation\WIS\',yeardmon,'\',loc{zz},'\'];
-    arcfl = [arcf,'\',loc{zz},'\'];
+    ii = strfind(loc{zz},'level');
+    levn = loc{zz}(ii+5:end);
+    val = [out,'/','level',levn,'/Validation/'];
+    arcv = [BASEA,'/Validation/WIS/',yeardmon,'/','level',levn,'/'];
+    arcfl = [arcf,'/level',levn,'/'];
     if ~exist(arcv,'dir')
         mkdir(arcv);
     end
@@ -29,6 +31,6 @@ for zz = 1:6
         mkdir(arcfl);
     end
     
-    copyfile([out,'\',loc{zz},'\*.png'],arcfl);
-    copyfile([val,'\*'],arcv);
+    system(['cp ',out,'/level',levn,'/*.png ',arcfl]);
+    system(['cp ',val,'/* ',arcv]);
 end

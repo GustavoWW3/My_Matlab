@@ -13,25 +13,27 @@ loc{4} = [outfile,'/level3C'];
 loc{5} = [outfile,'/level3S1'];
 loc{6} = [outfile,'/level3S2'];
 
+year = outfile(end-6:end-3);
+mon = outfile(end-1:end);
+
 for zz = 1:length(loc)
     if ~exist(loc{zz},'dir')
         mkdir(loc{zz});
     end
     cd (loc{zz})
     ii = strfind(loc{zz},'level');
-    copyfile([get_file,'*-LEVEL', ...
-        loc{zz}(ii+5:end),'-MMt.tgz'],'.');
-    fnamest = [get_file,'*-LEVEL', ...
-            loc{zz}(ii+5:end),'-ST-onlns.tgz'];
+    levn = loc{zz}(ii+5:end);
+    copyfile([get_file,'LEVEL',levn,'/*-LEVEL', ...
+        levn,'-MMt.tgz'],'.');
+    fnamest = [get_file,'LEVEL',levn,'/*-LEVEL', ...
+            levn,'-ST-onlns.tgz'];
     blah = dir(fnamest);
     if ~isempty(blah)
         copyfile(fnamest,'.');
     end
-    ww3_read('ATL')
+    wis_read('ATL',year,mon)
     
 end
-year = outfile(end-6:end-3);
-mon = outfile(end-1:end);
-%archive_atl(year,mon);
-
+archive_atl(year,mon);
+system(['rm -rf ',outfile]);
 end
