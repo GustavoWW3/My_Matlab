@@ -13,6 +13,7 @@ set(0,'DefaultFigureRenderer','painters');
 %   such as your home Matlab directory)
 %dplocal = '/net/massey/export/data/blue/disk1/massey/My_Matlab/';
 dplocal = '/home/thesser1/My_Matlab/';
+path(path,[dplocal,'export_fig']);
 path(path,[dplocal,'Old_plotting']);
 path(path,[dplocal,'utilities']);
 path(path,[dplocal,'Extra_files']);

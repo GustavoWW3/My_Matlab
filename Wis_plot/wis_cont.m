@@ -127,7 +127,8 @@ for qq = 1:8
       [imax jmax] = find(hs{qq} == RANGMM);
       
     load cmap.mat
-    f = figure('visible','off');
+    f = figure('visible','on');
+    %set(f,'color','white')
     %set(f,'TextFontSize',10,'AxesFontSize',10);
     %set(f,'AxesFontName','Helvetica','TextFontName','Helvetica');
     %f = figure('visible','on');
@@ -215,8 +216,9 @@ for qq = 1:8
 %     set(f,'Position',pos);
      set(f,'PaperPositionMode','manual');
 %set(gcf,'renderer','painters');
-%    print(f,'-dpng','-r600',fileout1); 
-    saveas(f,fileout1,'png')
+    print(f,'-dpng','-r0','-painters',fileout1);
+    %export_fig(f,fileout1,'-png','-nocrop','-painters');
+%    saveas(f,fileout1,'png')
     %clf;clear f
     close(f);clear f
 end
