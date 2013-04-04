@@ -218,8 +218,9 @@ for qq = 1:8
      set(f,'PaperPositionMode','manual');
 %set(gcf,'renderer','painters');
     print(f,'-dpng','-r0','-painters',fileout1);
-    %export_fig(f,fileout1,'-png','-nocrop','-painters');
-%    saveas(f,fileout1,'png')
+    %export_fig(f,fileout1,'-png','-r0','-painters');
+    %exportfig(f,[fileout1,'.png'])
+    %    saveas(f,fileout1,'png')
     %clf;clear f
     close(f);clear f
 end

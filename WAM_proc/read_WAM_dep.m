@@ -9,10 +9,10 @@ lon = data{5}:data{2}:data{6};
 
 for jj = 1:numlat
     for ii = 1:numlon
-        data = textscan(fid,'%5f',1);
-        depth(ii,jj) = data{1};
-        data = textscan(fid,'%1c',1);
-        deptp(ii,jj) = data{1};
+        data = fscanf(fid,'%5d',1);
+        depth(ii,jj) = data(1);
+        data = fscanf(fid,'%1c',1);
+        deptp(ii,jj) = data(1);
     end
 end
 fclose(fid);
