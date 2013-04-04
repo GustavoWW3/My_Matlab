@@ -4,8 +4,8 @@
  
 set(0,'DefaultTextFontSize',10);
 set(0,'DefaultAxesFontSize',10);
-set(0,'DefaultAxesFontname','Helvetica');
-set(0,'DefaultTextFontname','Helvetica');
+set(0,'DefaultAxesFontname','Arial');
+set(0,'DefaultTextFontname','Arial');
 set(0,'DefaultAxesBox','off');
 set(0,'DefaultFigureRenderer','painters');
 
