@@ -3,7 +3,8 @@ function [lon,lat,depth] = grid_gebco_netcdf(lonr,latr)
 %  lonr   NUMERIC  1x2 array for range of lon . ex. [-79.5 -66]
 %  latr   NUMERIC  1x2 array for range of lat  
 % ----------------------------------------------------------------
-blah = netcdf('gebco_08.nc');
+pdir = '/mnt/CHL_WIS_1/Bathymetry/GEBCO/';
+blah = netcdf([pdir,'gebco_08.nc']);
 x_range = blah.VarArray(1).Data;
 y_range = blah.VarArray(2).Data;
 spacing = blah.VarArray(4).Data;

@@ -3,9 +3,11 @@ function [lon,lat,depth] = grid_gebco(lonr,latr)
 %  lonr   NUMERIC  1x2 array for range of lon . ex. [-79.5 -66]
 %  latr   NUMERIC  1x2 array for range of lat  
 % ----------------------------------------------------------------
-x_range = ncread('gebco_08.nc','x_range');
-y_range = ncread('gebco_08.nc','y_range');
-spacing = ncread('gebco_08.nc','spacing');
+pdir = '/mnt/CHL_WIS_1/Bathymetry/GEBCO/';
+pname = [pdir,'gebco_08.nc'];
+x_range = ncread(pname,'x_range');
+y_range = ncread(pname,'y_range');
+spacing = ncread(pname,'spacing');
 
 xxfile = x_range(1)*3600+(spacing*3600):30:x_range(2)*3600;
 yyfile = y_range(2)*3600-(spacing*3600):-30:y_range(1)*3600;
@@ -22,7 +24,7 @@ jj2 = find(yyfile == latr(1)*3600);
 numy = jj2 - jj1 + 1;
 for jj = 1:numy
     start = (jj1 + (jj-1))*xlen + ii1;
-    dep(jj,:) = ncread('gebco_08.nc','z',start,numx);
+    dep(jj,:) = ncread(pname,'z',start,numx);
 end
 depth = flipud(dep);
 
