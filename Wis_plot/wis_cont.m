@@ -127,7 +127,7 @@ for qq = 1:8
       [imax jmax] = find(hs{qq} == RANGMM);
       
     load cmap.mat
-    f = figure('visible','on');
+    f = figure('visible','off');
     %set(f,'color','white')
     %set(f,'TextFontSize',10,'AxesFontSize',10);
     %set(f,'AxesFontName','Helvetica','TextFontName','Helvetica');
@@ -201,7 +201,8 @@ for qq = 1:8
      set(f,'units','inches');
      %set(f,'Position',[0 0 6.75 7.50]);
      set(f,'Position',figpos);
-     set(f,'papersize',[9 11]);
+     %set(f,'papersize',[9 11]);
+     set(f,'papersize',figpos(3:4));
      set(f,'PaperPosition',figpos);
 %     set(f,'paperposition',[0.48 1.65 7.76 7.92])
 %     set(f,'paperposition',[1 1 15 18]);

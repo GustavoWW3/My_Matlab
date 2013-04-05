@@ -4,8 +4,8 @@
  
 set(0,'DefaultTextFontSize',10);
 set(0,'DefaultAxesFontSize',10);
-set(0,'DefaultAxesFontname','Helvetica');
-set(0,'DefaultTextFontname','Helvetica');
+set(0,'DefaultAxesFontname','Arial');
+set(0,'DefaultTextFontname','Arial');
 set(0,'DefaultAxesBox','off');
 set(0,'DefaultFigureRenderer','painters');
 
@@ -14,6 +14,7 @@ set(0,'DefaultFigureRenderer','painters');
 %dplocal = '/net/massey/export/data/blue/disk1/massey/My_Matlab/';
 dplocal = '/home/thesser1/My_Matlab/';
 path(path,[dplocal,'export_fig']);
+path(path,[dplocal,'make_grid']);
 path(path,[dplocal,'exportfig']);
 path(path,[dplocal,'Old_plotting']);
 path(path,[dplocal,'utilities']);

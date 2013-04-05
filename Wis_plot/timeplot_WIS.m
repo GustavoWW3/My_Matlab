@@ -14,6 +14,7 @@ coord(coord(1:2)< 0) = coord(coord(1:2)<0) + 360;
 
 f = figure('visible','off');
 clf
+set(f,'inverthardcopy','off','color','white');
 orient tall
 subplot(8,3,[2 6])
 m_proj('mercator','long',[coord(1) coord(2)],'lat',[coord(3) coord(4)]);
@@ -114,7 +115,10 @@ xlabel(['Month/Day in Year ',datestr(model.time(1),'yyyy')], ...
     'fontweight','bold');
 ylabel('\theta_{wind}','fontweight','bold');
 
-
+set(f,'units','inches');
+set(f,'papersize',[9 11]);
+set(f,'position',[0 0 9 11]);
+set(f,'paperposition',[0 0 9 11]);
 ffout = [saven,'-',buoyc];
 saveas(f,ffout,'png')
 clear f
