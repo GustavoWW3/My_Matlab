@@ -1,3 +1,6 @@
+% retrieve and process NODC netCDF4 files
+% created 07/12 TJ. Hesser
+
 idd = input('Do you need to download data (y,n): ','s');
 if strcmp(idd,'y')
     year = input('What year to download (yyyy): ');

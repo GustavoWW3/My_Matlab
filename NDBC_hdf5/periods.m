@@ -11,7 +11,7 @@ fmean = 0;
 etot = sum(ef.*delf);
 fmean = sum((ef.*delf)./fr);
 ii = find(ef == max(ef));
-mpeak = ii;
+mpeak = ii(1);
 
 if mpeak > 1 & mpeak < length(fr)
     fmean = etot / (fmean + 1.0e-10);
