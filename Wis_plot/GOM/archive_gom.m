@@ -2,7 +2,7 @@ function archive_gom(year,mon)
 
 yeardmon = [year,'-',mon];
 BASE = '/home/thesser1/GOM/model/';
-BASEA = '/mnt/CHL_WIS_1/GOM/Evaluation/WAM451C/';
+BASEA = '/mnt/CHL_WIS_1/GOM/Evaluation/WW3/';
 arcf = [BASEA,'/Figures/',yeardmon];
 out = [BASE,'/',yeardmon];
 arcm = [BASEA,'/Model/',yeardmon];
@@ -35,7 +35,7 @@ for zz = 2:length(loc)
     %if ~exist(arcml,'dir')
     %    mkdir(arcml);
     %end
-    %system(['cp ',out,'/',loc{zz},'/*.tgz ',arcml]);
+    system(['cp ',out,'/',loc{zz},'/*.tgz ',arcml]);
     system(['cp ',out,'/',loc{zz},'/*.png ',arcfl]);
     system(['cp ',val,'/* ',arcv]);
 end

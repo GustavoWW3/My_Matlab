@@ -26,7 +26,7 @@ for zz = 1:length(locd)
          mkdir(loc{zz+1});
      end
     cd (loc{zz+1})
-    ii = strfind(loc{zz},'LEVEL');
+    ii = strfind(loc{zz+1},'LEVEL');
     %copyfile([get_file,'LEVEL',loc{zz}(ii+5:end),'/*-LEVEL', ...
     %    loc{zz}(ii+5:end),'-MMt.tgz'],'.');
     %copyfile([get_file,'/*L',loc{zz+1}(ii+5:end),'*MMd.tgz'],'.');
@@ -40,6 +40,6 @@ for zz = 1:length(locd)
     wis_read('GOM',year,mon)
     
 end
-%archive_gom(year,mon);
-%system(['rm -rf ',outfile]);
+archive_gom(year,mon);
+system(['rm -rf ',outfile]);
 end
