@@ -3,7 +3,7 @@ function [aa payload] = get_NDBC_air(fname)
 %   read NODC netCDF4 file to get met information
 %   created 07/12 by TJ. Hesser
 % 
-fprintf(1,'Analyizing Station %5s\n',fname(6:10));
+fprintf(1,'Analyizing Station %5s\n',fname(66:70));
 %Get attributes distributed
 fileatt = ncinfo(fname);
 fatt = {fileatt.Attributes.Name};
@@ -16,12 +16,12 @@ times = double(ncread(fname,'/time'));
 % Get lat and lon out of file and convert to deg min sec  
 latm = strcmp(fatt,'nominal_latittude');
 lat = ncreadatt(fname,'/','nominal_latitude');
-[lad,lam,las] = deg2dms(abs(lat));
+[lad,lam,las] = ddeg2dms(abs(lat));
 lam = abs(lam);las = round(las);las = abs(las);
 lad = repmat(lad,[length(year) 1]);lam = repmat(lam,[length(year) 1]);
 las = repmat(las,[length(year) 1]);
 lon = ncreadatt(fname,'/','nominal_longitude');
-[lod,lom,los] = deg2dms(abs(lon));
+[lod,lom,los] = ddeg2dms(abs(lon));
 lom = abs(lom);los = abs(los);los = round(los);
 lod = repmat(lod,[length(year) 1]);lom = repmat(lom,[length(year) 1]);
 los = repmat(los,[length(year) 1]);
