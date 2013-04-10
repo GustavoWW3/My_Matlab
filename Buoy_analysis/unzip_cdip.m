@@ -1,13 +1,13 @@
 function unzip_cdip(year,bb)
 
-runcode = 'E:\CDIP\7z';
+runcode = 'C:\Cdip_test\7z';
 
 cd(['spc_',num2str(year)]);
 %bo = ls('*');buoy = bo(3:end,:);
 if bb < 100
-    buoy = ['0',num2str(bb)];
+   buoy = ['0',num2str(bb)];
 else
-    buoy = num2str(bb);
+   buoy = num2str(bb);
 end
 for zbuoy = 1:1%length(buoy)
     cd(buoy(zbuoy,:));fprintf(1,'Buoy number: %1s \n',buoy(zbuoy,:));pause(10);
@@ -29,3 +29,4 @@ for zbuoy = 1:1%length(buoy)
     end
     cd ../
 end
+cd ../

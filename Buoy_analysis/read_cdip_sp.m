@@ -35,8 +35,7 @@ function [aa,status] = read_cdip_sp(fdir)
 %         dtmean  :  Total mean wave direction (len) (deg) (met) (Numeric)
 % -------------------------------------------------------------------------
 %clear all
-%fname = ls([fdir,'sp*']);
-fname = ls('sp*');
+fname = ls([fdir,'sp*']);
 if isempty(fname)
     status = 0;aa = 0;
     return

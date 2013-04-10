@@ -1,11 +1,15 @@
-cd 'H:\NDBC\'
+% change dirname to the directory you want the data in.  
+dirname = 'C:\Great_lakes\Lake_Huron\NDBC\Buoy\';
+cd 'X:\NDBC\'
+% change station number
 file = 45008;
+% change year range 
 year = [1980:1:2009];
 month = ['janfebmaraprmayjunjulaugsepoctnovdec'];
 for kk = 1:size(year,2)
     yy = num2str(year(kk))
     cd(yy)
-    moveto = ['C:\Great_lakes\Lake_Heron\NDBC\Bouy\',num2str(file),'\',yy];
+    moveto = [dirname,num2str(file),'\',yy];
     for jj = 1:12
         mon = month(3*jj-2:3*jj)
         cd(mon)
