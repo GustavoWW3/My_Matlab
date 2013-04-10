@@ -7,7 +7,7 @@ ide = nang;
 idt = -1;
 
 dire = 270 - dtheta.*[0:ide-1];
-dfsq = repmat(delf',[1 nang]);
+dfsq = repmat(delf,[1 nang]);
 etf = sum(dfsq(1:ife,:).*(ef2d(1:ife,:) + ef2d(2:ife+1,:)));
 
 ii = find(etf == max(etf));
@@ -15,7 +15,7 @@ etop = etf(ii);
 idt = ii;
 
 if idt > 0
-    delftpdr = dire(idt);
+    delftpdr = dire(max(idt));
     if delftpdr < 0
         delftpdr = delftpdr + 360;
     else
@@ -23,7 +23,7 @@ if idt > 0
     end
 end
 
-[sint cost sin2t cos2t] = angle(dtheta,nang);
+[sint cost sin2t cos2t] = angle_onlns(dtheta,nang);
 edt = etf*ainc;
 sum0 = sum(edt);
 eex = sum(cost.*edt);

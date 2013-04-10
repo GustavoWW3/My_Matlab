@@ -21,7 +21,7 @@ if sum0 > 0
     delfthmo = 4.0*sqrt(sum0);
     ii = find(ef == max(ef));
     etop = ef(ii);
-    ift = ii;
+    ift = ii(1);
     
     if ift <= nfre
         delfttp = 1./fr(ift);

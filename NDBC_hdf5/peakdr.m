@@ -1,6 +1,6 @@
 function thpeak = peakdr(ef2d,mp,nfre,nang,dtheta)
 
-[sint cost sin2t cos2t] = angle(dtheta,nang);
+[sint cost sin2t cos2t] = angle_onlns(dtheta,nang);
 ainc =  pi/180 * dtheta;
 ii = find(ef2d(mp,:) == max(ef2d(mp,:)));
 emaxdr = ef2d(mp,ii(1));

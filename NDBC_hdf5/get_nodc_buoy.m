@@ -1,8 +1,11 @@
-function get_nodc_buoy(year,mon,stat)
+function perr = get_nodc_buoy(year,mon,stat)
 p = inputParser;
 p.addRequired('year');
 p.addRequired('mon');
 p.addOptional('stat','00000');
+%
+% get NODC netCDF4 file from ftp server
+% created 07/12 TJ. Hesser
 
 months = ['jan';'feb';'mar';'apr';'may';'jun';'jul';'aug';'sep';'oct'; ...
     'nov';'dec'];
@@ -16,6 +19,13 @@ if ~exist(dir2,'dir')
     mkdir(dir2);
 end
 cd(dir2);
+filefull = ls('*.nc');
+if ~isempty(filefull)
+    perr = 0;
+    return
+else
+    perr = 1;
+end
 
 f = ftp('ftp.nodc.noaa.gov');
 cd(f,'pub/data.nodc/ndbc/cmanwx');
@@ -26,8 +36,13 @@ else
     monc = num2str(mon);
 end
 timec = [num2str(year),'/',monc];
+try
 cd(f,timec);
-
+catch
+    copyfile(['Z:NDBC/',num2str(year),'/',months(mon,:),'/n',stat,'_',...
+        num2str(year),'_',monc,'.spe*'],'.');
+    return
+end
 if ~exist('stat','var')
     mget(f,'*.nc');
 else
