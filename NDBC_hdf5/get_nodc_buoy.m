@@ -19,7 +19,11 @@ if ~exist(dir2,'dir')
     mkdir(dir2);
 end
 cd(dir2);
-filefull = dir('*.nc');
+if ~strcmp(stat,'00000')
+    filefull = dir(['*',stat,'*.nc']);
+else
+    filefull = dir('*.nc');
+end
 if ~isempty(filefull)
     perr = 0;
     return
@@ -43,7 +47,7 @@ catch
         num2str(year),'_',monc,'.spe*'],'.');
     return
 end
-if ~exist('stat','var')
+if strcmp(stat,'00000')
     mget(f,'*.nc');
 else
     mget(f,['*',stat,'*.nc']);

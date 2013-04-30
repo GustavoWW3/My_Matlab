@@ -38,18 +38,18 @@ get_nodc_buoy(year,mon,statc,pname)
 %pname = 'http://data.nodc.noaa.gov/thredds/dodsC/ndbc/cmanwx/';
 %pname = '';
 if strcmp(statc,'00000')
-    fname1 = dir('*.nc');
-    np = size(fname1,1);
+    fname = dir('*.nc');
+    np = size(fname,1);
 else
     try
-        fname1.name = [pname,'/',yearc,'/',mond,'/NDBC_',statc,'_',yearc, ...
+        fname.name = [pname,'/',yearc,'/',mond,'/NDBC_',statc,'_',yearc, ...
             monc,'_D1_v00.nc'];
-        binfo = ncinfo(fname1.name);
+        binfo = ncinfo(fname);
     catch
-        fname1.name= [pname,'/',yearc,'/',mond,'/NDBC_',statc,'_',yearc, ...
+        fname = [pname,'/',yearc,'/',mond,'/NDBC_',statc,'_',yearc, ...
             monc,'_D2_v00.nc'];
         try
-            binfo = ncinfo(fname1.name);
+            binfo = ncinfo(fname);
         catch
             fprintf(1,'Need specific name\n');
         end
@@ -63,10 +63,9 @@ onlform = ['%5s%6i%3i%3i%3i%3i%5i%5i%5i%5i%5i%5i%7.1f%7.2f%7.2f%7.2f', ...
     '% 14.5E% 14.5E\n'];
 sp1form1 = ['%5s%6i%3i%3i%3i%3i'];
 for zz = 1:np
-    fname = fname1(zz).name;
-    statc = fname(end-21:end-17);
+    fname 
     nn = 1;
-    [aa payload] = get_NDBC_air(fname,pname);
+    [aa payload] = get_NDBC_air(fname);
 %     if zz > 1 & files(zz).name(6:10) == stat
 %         nn = 2;
 %     end
@@ -127,4 +126,4 @@ for zz = 1:np
         fclose(fid);
         fclose(fid2);
     end
-end    
+%end    

@@ -78,26 +78,15 @@ catch
     re = 0;
 end
 if ~isnan(anemh)
-    dp = [pdir,'alt_height.dat'];
-    if exist(dp,'file')
-        fid2 = fopen(dp);
+    if exist([pdir,alt_height.dat'],'file')
+        fid2 = fopen(dp(1).name);
         data = textscan(fid2,'%s%f');
-        ii = strcmp(data{1},fname(end-21:end-17));
+        ii = strcmp(data{1},fname(6:10));
         anemh = data{2}(ii);
-        fclose(fid2);
-        if isempty(anemh)
-            ques = ['What is the anemometer height for buoy ',fname(end-21:end-17),': '];
-            anemh = input(ques);
-            fid2 = fopen(dp,'a');
-            fprintf(fid2,'%5s %7.2f\n',fname(end-21:end-17),anemh);
-            fclose(fid2);
-        end
+        if isempty(anemh
     else
         ques = ['What is the anemometer height for buoy ',fname(end-21:end-17),': '];
         anemh = input(ques);
-        fid2 = fopen(dp,'w');
-        fprintf(fid2,'%5s %7.2f\n',fname(end-21:end-17),anemh);
-        fclose(fid2);
     end
 end
 anemh = repmat(anemh,[length(year) 1]);
