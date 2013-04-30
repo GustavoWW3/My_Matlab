@@ -3,7 +3,7 @@ function [aa payload] = get_NDBC_air(fname)
 %   read NODC netCDF4 file to get met information
 %   created 07/12 by TJ. Hesser
 % 
-fprintf(1,'Analyizing Station %5s\n',fname(6:10));
+fprintf(1,'Analyizing Station %5s\n',fname(end-21:end-17));
 %Get attributes distributed
 fileatt = ncinfo(fname);
 fatt = {fileatt.Attributes.Name};
@@ -85,7 +85,7 @@ if ~isnan(anemh)
         ii = strcmp(data{1},fname(6:10));
         anemh = data{2}(ii);
     else
-        ques = ['What is the anemometer height for buoy ',fname(6:10),': '];
+        ques = ['What is the anemometer height for buoy ',fname(end-21:end-17),': '];
         anemh = input(ques);
     end
 end

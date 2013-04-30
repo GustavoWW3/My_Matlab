@@ -1,4 +1,4 @@
-function perr = get_nodc_buoy(year,mon,stat)
+function perr = get_nodc_buoy(year,mon,stat,pdir)
 p = inputParser;
 p.addRequired('year');
 p.addRequired('mon');
@@ -6,7 +6,7 @@ p.addOptional('stat','00000');
 %
 % get NODC netCDF4 file from ftp server
 % created 07/12 TJ. Hesser
-
+cd(pdir);
 months = ['jan';'feb';'mar';'apr';'may';'jun';'jul';'aug';'sep';'oct'; ...
     'nov';'dec'];
 dir1 = num2str(year);

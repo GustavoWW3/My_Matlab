@@ -42,7 +42,7 @@ try
     %time_spec = time_spec(jj,1); 
 catch
     fprintf(1,'Wave Spectra information not available for station %5s\n', ...
-        fname(6:10));
+        fname(end-21:end-17));
     times = double(h5read(fname,'/time'));
     c11 = repmat(-999.00,[length(freq) length(times)]);
     c11_info.FillValue = 0.0;
@@ -63,9 +63,9 @@ try
     alpha2 = h5read(fname,['/',payload,'/wave_sensor_1/alpha2']);
     %alpha2 = alpha2(:,jj);
     p = 2;
-    fprintf(1,'Direction information available for %5s \n\n',fname(6:10));
+    fprintf(1,'Direction information available for %5s \n\n',fname(end-21:end-17));
 catch
-    fprintf(1,'No direction information available for %5s\n\n',fname(6:10));
+    fprintf(1,'No direction information available for %5s\n\n',fname(end-21:end-17));
     p = 1;
     r1 = repmat(0,size(c11));r2 = repmat(0,size(c11));
     alpha1 = repmat(0,size(c11));alpha2 = repmat(0,size(c11));

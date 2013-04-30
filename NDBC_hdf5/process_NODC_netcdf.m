@@ -1,4 +1,4 @@
-function process_NODC_netcdf(year,mon,statname)
+function process_NODC_netcdf(year,mon,statname,pname)
 % retrieve and process NODC netCDF4 files
 % created 07/12 TJ. Hesser
 if ~ischar(year)
@@ -15,20 +15,23 @@ if ~ischar(mon)
 else
     monc = mon;
 end
+months = ['jan';'feb';'mar';'apr';'may';'jun';'jul';'aug';'sep';'oct'; ...
+    'nov';'dec'];
+mond = months(mon,:);
 if ~ischar(statname)
     statc = num2str(statname);
 else
     statc = statname;
 end
-%get_nodc_buoy(year,mon,statname)
+get_nodc_buoy(year,mon,statc,pname)
 %pname = 'http://data.nodc.noaa.gov/thredds/dodsC/ndbc/cmanwx/';
-pname = '';
+%pname = '';
 try
-    fname = [pname,'/',yearc,'/',monc,'/NDBC_',statc,'_',yearc, ...
+    fname = [pname,'/',yearc,'/',mond,'/NDBC_',statc,'_',yearc, ...
         monc,'_D1_v00.nc'];
     binfo = ncinfo(fname);
 catch
-    fname = [pname,'/',yearc,'/',monc,'/NDBC_',statc,'_',yearc, ...
+    fname = [pname,'/',yearc,'/',mond,'/NDBC_',statc,'_',yearc, ...
         monc,'_D2_v00.nc'];
     try
         binfo = ncinfo(fname);
@@ -49,7 +52,6 @@ sp1form1 = ['%5s%6i%3i%3i%3i%3i'];
 %         nn = 2;
 %     end
 %   stat = files(zz).name(6:10);
-payload = 'payload_1';
     [bb cc p] = get_NDBC_spec(fname,payload);
      
     fout = ['n',statc,'_',yearc,'_',...
