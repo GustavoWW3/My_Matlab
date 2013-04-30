@@ -35,14 +35,14 @@ function [aa,status] = read_cdip_sp(fdir)
 %         dtmean  :  Total mean wave direction (len) (deg) (met) (Numeric)
 % -------------------------------------------------------------------------
 %clear all
-fname = ls([fdir,'sp*']);
+fname = dir([fdir,'sp*']);
 if isempty(fname)
     status = 0;aa = 0;
     return
 end
 dfold = 0;zf = 0;status = 1;
 for zfile = 1:size(fname,1)
-fid = fopen([fdir,fname(zfile,:)]);                                                        % open file
+fid = fopen([fdir,fname(zfile).name]);                                                        % open file
 data = fgetl(fid);fname2 = data(12:30);aa.analyzed = data(51:69);        % read 1st line
 aa.stnum = str2double(data(14:16));
 aa.sennum = str2double(data(17:18));

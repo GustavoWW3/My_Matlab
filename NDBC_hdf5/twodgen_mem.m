@@ -1,21 +1,29 @@
-function [ef2d] = twodgen(ef,fr,delf,r1,r2,alp1,alp2,dep)
+function [ef2d] = twodgen_mem(fr,ef,a1,b1,a2,b2,dep)
 
 rad = pi/180;
 % angle
 nfre = length(fr);
 %for ii = 1:nfre
 xk = wavnum(fr,dep)';
-tmp = (xk.*xk)./2;
-c22 = ef .* tmp .* (1 - r2 .* cos(2.*alp2.*rad));
-c33 = ef .* tmp .* (1 + r2 .* cos(2.*alp2.*rad));
-c23 = ef .* tmp .* r2.* sin(2.*alp2.*rad);
-q12 = -ef .* xk .* r1 .* sin(alp1.*rad);
-q13 = -ef .* xk .* r1 .* cos(alp1.*rad);
-
-% 
 c11 = ef;
-[ef2d] = mem(fr,c11,c22,c33,c23,q12,q13);
-%find values where c11 is large enough for analysis
+q12 = a1.*xk.*pi;
+q13 = b1.*xk.*pi;
+c23 = b2.*xk.*xk.*pi/2.0;
+c22 = (xk.*xk.*(a2*pi + c11))./2;
+c33 = xk.*xk.*c11 - c22;
+
+ef2d = mem(fr,c11,c22,c33,c23,q12,q13);
+contourf(ef2d);
+% tmp = (xk.*xk)./2;
+% c22 = ef .* tmp .* (1 - r2 .* cos(2.*alp2.*rad));
+% c33 = ef .* tmp .* (1 + r2 .* cos(2.*alp2.*rad));
+% c23 = ef .* tmp .* r2.* sin(2.*alp2.*rad);
+% q12 = -ef .* xk .* r1 .* sin(alp1.*rad);
+% q13 = -ef .* xk .* r1 .* cos(alp1.*rad);
+% 
+% % 
+% c11 = ef;
+% %find values where c11 is large enough for analysis
 % ii = c11 >= 1.0e-4;
 % 
 % d = zeros(size(c11));xk = zeros(size(c11));
@@ -44,8 +52,8 @@ c11 = ef;
 % % b1(ii) = q13(ii)./(sqrt(c11(ii).*(c22(ii) + c33(ii))));
 % % b2(ii) = 2.*c23(ii)./(c22(ii) + c33(ii));
 % 
-% %ef2d = mlm(fr,c11,a0,a1,b1,a2,b2);
-% ef2d = mlm(fr,c11,c22,c33,c23,q12,q13);
+% ef2d = mlm(fr,c11,a0,a1,b1,a2,b2);
+%ef2d = mlm(fr,c11,c22,c33,c23,q12,q13);
 %ainc =  pi/180;
 %[sint cost sin2t cos2t] = angle_onlns(1,360);
 %ef2d = mlm(fr,360,ainc,c11,c22,c33,c23,q12,q13,sint,cost,sin2t,cos2t);

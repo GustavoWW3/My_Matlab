@@ -1,4 +1,4 @@
-function aa = conc_GOM_eval(buoy,model,level,yeard,mon1,mon2)
+function aa = conc_ATL_eval(buoy,model,level,yeard,mon1,mon2)
 bas = 'ATL';
 if isunix
     cc = ['/mnt/CHL_WIS_1/Atlantic/Evaluation/',model,'/Validation/WIS/'];

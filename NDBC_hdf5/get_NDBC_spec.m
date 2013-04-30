@@ -100,11 +100,18 @@ for zz = 1:size(c11,2)
      
     if sum(r1(:,zz) > 0) | c11(:,zz) == -999
         if mp > 0
+        %[ef2d] = simp_ef2d(freq,c11(:,zz),r1(:,zz), ...
+        %    r2(:,zz),alpha1(:,zz),alpha2(:,zz));
         [ef2d] = twodgen(c11(:,zz),freq,df,r1(:,zz), ...
             r2(:,zz),alpha1(:,zz),alpha2(:,zz),dep);
         [wavdvt,wavdvfm,wavpd,wavdmx,wavfmx ...
             ,sumefx,sumefy,summfx,summfy] = ...
             directns(ef2d,freq,df,360,1,mp,dep);
+        wavdvt = dir_convert(wavdvt,270);
+        wavdvfm = dir_convert(wavdvfm,270);
+        wavpd = dir_convert(wavpd,270);
+        wavdmx = dir_convert(wavdmx,270);
+        
         [delftmdr,delftpdr,delftsprd] = ...
             delftsdrs(ef2d,freq,df,360,1);
         else

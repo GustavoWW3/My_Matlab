@@ -3,7 +3,7 @@ function [aa payload] = get_NDBC_air(fname)
 %   read NODC netCDF4 file to get met information
 %   created 07/12 by TJ. Hesser
 % 
-fprintf(1,'Analyizing Station %5s\n',fname(66:70));
+fprintf(1,'Analyizing Station %5s\n',fname(6:10));
 %Get attributes distributed
 fileatt = ncinfo(fname);
 fatt = {fileatt.Attributes.Name};
@@ -79,7 +79,7 @@ catch
 end
 if ~isnan(anemh)
     dp = dir('C:\NDBC\alt_height.dat');
-    if exist(dp(1).name,'file')
+    if exist('C:\NDBC\alt_height.dat','file')
         fid2 = fopen(dp(1).name);
         data = textscan(fid2,'%s%f');
         ii = strcmp(data{1},fname(6:10));

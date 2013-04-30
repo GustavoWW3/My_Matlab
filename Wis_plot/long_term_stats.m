@@ -103,7 +103,9 @@ for jj = 1:size(compend,1)
             timeplot_mmap(compc(jj,:))
             for zz = 1:nn
                 lond = lon(zz);
-                lond(lond < 0) = lond(lond < 0) + 360;
+                if compc(1,1) > 0
+                    lond(lond < 0) = lond(lond < 0) + 360;
+                end
                 m_text(lond,lat(zz),bname{zz},'VerticalAlignment','bottom', ...
                     'backgroundcolor',[1,1,1],'fontsize',8, ...
                     'horizontalalignment','left')

@@ -19,7 +19,7 @@ if ~exist(dir2,'dir')
     mkdir(dir2);
 end
 cd(dir2);
-filefull = ls('*.nc');
+filefull = dir('*.nc');
 if ~isempty(filefull)
     perr = 0;
     return

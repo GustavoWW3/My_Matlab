@@ -1,4 +1,4 @@
-function cdip_2_onlns(cdip,ndbc,year,mon)
+function frf_2_onlns(cdip,ndbc,year,mon)
 
 if isunix
     %cdir = '/mnt/CHL_WIS_1/CDIP/';
@@ -40,11 +40,12 @@ else
     monc = mont(mon,:);
 end
 if isunix
-    cdiry = [cdir,'spc_',yearc,'/',cdipc,'/',monc,'/01/'];
+    fname = ['waverdr3630_',yearc,'_',monnc,'.spec'];
+    cdiry = [cdir,fname];
 else
     cdiry = [cdir,'spc_',yearc,'\',cdipc,'\',monc,'\01\'];
 end
-if exist(cdiry,'dir')
+if exist(cdiry,'file')
     if isunix
         %ndbcd = ['/mnt/CHL_WIS_1/NDBC_CDIP'];
         ndbcd = ['/home/thesser1/NDBC/'];
@@ -60,11 +61,11 @@ if exist(cdiry,'dir')
         return
     end
     
-    [aa,status]= read_cdip_sp(cdiry);
-    if status == 0
-        return
-    end
-    time = num2str(aa.date');
+    [aa]= read_frf_spc(cdir,fname);
+%     if status == 0
+%         return
+%     end
+    time = num2str(aa.date);
     bb1(:,1) = str2num(time(:,1:4));
     bb1(:,2) = str2num(time(:,5:6));
     bb1(:,3) = str2num(time(:,7:8));

@@ -68,25 +68,25 @@ wavdmx = ainc*180/pi*(col(1) - 1);
 
 wavpd = peakdr(ef2d,mp,nfre,nang,dtheta);
 wavpd = 180/pi*wavpd;
-% 
-wavdvt = 270. -  wavdvt;
-%wavdvt = wavdvt - 180;
-if wavdvt < 0
-    wavdvt = wavdvt + 360;
-end
-wavdvfm = 270 - wavdvfm;
-%wavdvfm = wavdvfm - 180;
-if wavdvfm < 0
-    wavdvfm = wavdvfm + 360;
-end
-wavdmx = 270 - wavdmx;
-%wavdmx = wavdmx - 180;
-if wavdmx < 0
-    wavdmx = wavdmx + 360;
-end
-wavpd = 270 - wavpd;
-%wavpd = wavpd - 180;
-if wavpd < 0
-    wavpd = wavpd + 360;
-end
+% % 
+% %wavdvt = 270. -  wavdvt;
+% %wavdvt = wavdvt - 180;
+% if wavdvt < 0
+%     wavdvt = wavdvt + 360;
+% end
+% %wavdvfm = 270 - wavdvfm;
+% %wavdvfm = wavdvfm - 180;
+% if wavdvfm < 0
+%     wavdvfm = wavdvfm + 360;
+% end
+% wavdmx = 270 - wavdmx;
+% %wavdmx = wavdmx - 180;
+% if wavdmx < 0
+%     wavdmx = wavdmx + 360;
+% end
+% wavpd = 270 - wavpd;
+% %wavpd = wavpd - 180;
+% if wavpd < 0
+%     wavpd = wavpd + 360;
+% end
    

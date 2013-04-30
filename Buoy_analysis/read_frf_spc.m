@@ -1,6 +1,6 @@
-function aa = read_frf_spc(fname)
+function aa = read_frf_spc(cdir,fname)
 
-fid = fopen(fname);
+fid = fopen([cdir,fname]);
 data = textscan(fid,'%f%f%f%f%f%f%f%f%f%f',1);
 nn = 0;
 while ~isempty(data{1});
@@ -21,7 +21,10 @@ while ~isempty(data{1});
         dayc = num2str(day);
     end
     hminc = num2str(hmin);
-    if hmin < 1000
+    if hmin < 100
+        hourc1 = '0';
+        minc = '00';
+    elseif hmin < 1000
         hourc1 = hminc(1);
         minc = hminc(2:3);
     else
@@ -46,7 +49,11 @@ while ~isempty(data{1});
     
     if nn == 1
         %load('/home/thesser1/My_Matlab/Buoy_analysis/frf_loc.mat');
-        load('C:\matlab\My_Matlab\Buoy_analysis\frf_loc.mat');
+        if isunix
+            load('/home/thesser1/My_Matlab/Buoy_analysis/frf_loc.mat');
+        else
+            load('C:\matlab\My_Matlab\Buoy_analysis\frf_loc.mat');
+        end
         ii = timeref > timemat(nn);
         if ~isempty(timeref(ii))
             jj = find((ii == 1), 1 );
@@ -84,6 +91,6 @@ aa.date = dates;
 aa.timemat = timemat;
 aa.dep = depth;
 aa.hs = hmo';aa.tp = tp';aa.wdir = idir';
-aa.freq = freq';aa.df = repmat(df,size(freq))';
-aa.c11 = ef;aa.a1 = a1;aa.a2 = a2;
+aa.freq = freq';aa.bw = repmat(df,size(freq))';
+aa.ef = ef;aa.a1 = a1;aa.a2 = a2;
 aa.b1 = b1;aa.b2 = b2;

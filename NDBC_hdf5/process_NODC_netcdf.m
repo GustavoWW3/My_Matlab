@@ -21,13 +21,14 @@ else
     statc = statname;
 end
 %get_nodc_buoy(year,mon,statname)
-pname = 'http://data.nodc.noaa.gov/thredds/dodsC/ndbc/cmanwx/';
+%pname = 'http://data.nodc.noaa.gov/thredds/dodsC/ndbc/cmanwx/';
+pname = '';
 try
-    fname = [pname,yearc,'/',monc,'/NDBC_',statc,'_',yearc, ...
+    fname = [pname,'/',yearc,'/',monc,'/NDBC_',statc,'_',yearc, ...
         monc,'_D1_v00.nc'];
     binfo = ncinfo(fname);
 catch
-    fname = [pname,yearc,'/',monc,'/NDBC_',statc,'_',yearc, ...
+    fname = [pname,'/',yearc,'/',monc,'/NDBC_',statc,'_',yearc, ...
         monc,'_D2_v00.nc'];
     try
         binfo = ncinfo(fname);
@@ -48,6 +49,7 @@ sp1form1 = ['%5s%6i%3i%3i%3i%3i'];
 %         nn = 2;
 %     end
 %   stat = files(zz).name(6:10);
+payload = 'payload_1';
     [bb cc p] = get_NDBC_spec(fname,payload);
      
     fout = ['n',statc,'_',yearc,'_',...
@@ -71,7 +73,7 @@ sp1form1 = ['%5s%6i%3i%3i%3i%3i'];
             fid = fopen(fspec1,'a+');
         end
         for qq = 1:size(cc.c11,2)
-            fprintf(fid,sp1form1,stat,aa(qq,1:5));
+            fprintf(fid,sp1form1,statc,aa(qq,1:5));
             for jj = 1:length(cc.freq)
                 fprintf(fid,'%8.4f%12.6f',cc.freq(jj),cc.c11(jj,qq));
             end
@@ -90,8 +92,8 @@ sp1form1 = ['%5s%6i%3i%3i%3i%3i'];
             fid2 = fopen(fspec2,'a+');
         end
         for qq = 1:size(cc.c11,2)
-            fprintf(fid,sp1form1,stat,aa(qq,1:5));
-            fprintf(fid2,sp1form1,stat,aa(qq,1:5));
+            fprintf(fid,sp1form1,statc,aa(qq,1:5));
+            fprintf(fid2,sp1form1,statc,aa(qq,1:5));
             for jj = 1:length(cc.freq)
                 fprintf(fid,'%8.4f%12.6f',cc.freq(jj),cc.c11(jj,qq));
                 fprintf(fid2,'%8.4f%8.4f%8.4f%6.1f%6.1f%12.6f',cc.freq(jj), ...

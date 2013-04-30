@@ -35,7 +35,7 @@ function [aa,status] = read_canada_sp(fdir,year)
 %         dtmean  :  Total mean wave direction (len) (deg) (met) (Numeric)
 % -------------------------------------------------------------------------
 %clear all
-fname = ls([fdir,'*',year,'.FB']);
+fname = dir([fdir,'*',year,'.fb']);
 if isempty(fname)
     fnamezip = ls([fdir,'*',year,'.zip']);
     if isempty(fnamezip)
@@ -46,11 +46,11 @@ if isempty(fname)
         cd(fdir)
         unzip(fnamezip(zz,:));
     end
-    fname = ls([fdir,'*',year,'.FB']);
+    fname = ls([fdir,'*',year,'.fb']);
 end
 dfold = 0;zf = 0;status = 1;
 for zfile = 1:size(fname,1)
-fid = fopen([fdir,fname(zfile,:)]);                                                        % open file
+fid = fopen([fdir,fname(zfile).name]);                                                        % open file
 data = fgetl(fid);
 nn = 0;
 while data ~= -1;
@@ -97,8 +97,12 @@ for ii = 1:numopt
 end
 
 for ii = 1:numpar
-    data = fscanf(fid,'%f',1);
-    data = fscanf(fid,'%4c',1);
+    datan = fscanf(fid,'%f',1);
+    datac = fscanf(fid,'%4c',1);
+    if strcmp(datac(4),'$')
+        datac(4) = 'S';
+    end
+    eval(['bb.',datac,' = datan;']);
 end
 for ii = 1:numfreq
     try
@@ -124,6 +128,8 @@ fmean = sum((aa.ef(:,nn).*aa.bw(:,nn))./aa.freq(:,nn));
 etot = sum(aa.ef(:,nn).*aa.bw(:,nn));
 fmean = etot/(fmean + 1.0e-10);
 aa.tm(:,nn) = 1./fmean;
+aa.hsb(:,nn) = bb.VCAR;
+aa.tpb(:,nn) = bb.VTPK;
 data = fgetl(fid);data = fgetl(fid);
 clear freq df ef
 end
