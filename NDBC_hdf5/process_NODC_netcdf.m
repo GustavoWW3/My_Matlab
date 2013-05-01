@@ -69,6 +69,10 @@ for zz = 1:np
     if zz > 1 & strcmp(statc,statcold)
         nn = 2;
     else
+        ff = ['n',statc,'_',yearc,'_',monc,'.onlns'];
+        if exist(ff,'file')
+            continue
+        end
         nn = 1;
     end
     [aa payload] = get_NDBC_air(fname,pname);
