@@ -41,20 +41,21 @@ if strcmp(statc,'00000')
     fname1 = dir('*.nc');
     np = size(fname1,1);
 else
-    try
-        fname1.name = [pname,'/',yearc,'/',mond,'/NDBC_',statc,'_',yearc, ...
-            monc,'_D1_v00.nc'];
-        binfo = ncinfo(fname1.name);
-    catch
-        fname1.name= [pname,'/',yearc,'/',mond,'/NDBC_',statc,'_',yearc, ...
-            monc,'_D2_v00.nc'];
-        try
-            binfo = ncinfo(fname1.name);
-        catch
-            fprintf(1,'Need specific name\n');
-        end
-    end
-    np = 1;
+%     try
+%         fname1.name = [pname,'/',yearc,'/',mond,'/NDBC_',statc,'_',yearc, ...
+%             monc,'_D1_v00.nc'];
+%         binfo = ncinfo(fname1.name);
+%     catch
+%         fname1.name= [pname,'/',yearc,'/',mond,'/NDBC_',statc,'_',yearc, ...
+%             monc,'_D3_v00.nc'];
+%         try
+%             binfo = ncinfo(fname1.name);
+%         catch
+%             fprintf(1,'Need specific name\n');
+%         end
+%     end
+    fname1 = dir(['*',statc,'*.nc']);
+    np = size(fname1,1);
 end
 
 onlform = ['%5s%6i%3i%3i%3i%3i%5i%5i%5i%5i%5i%5i%7.1f%7.2f%7.2f%7.2f', ...
@@ -65,8 +66,16 @@ sp1form1 = ['%5s%6i%3i%3i%3i%3i'];
 for zz = 1:np
     fname = fname1(zz).name;
     statc = fname(end-21:end-17);
-    nn = 1;
+    if zz > 1 & strcmp(statc,statcold)
+        nn = 2;
+    else
+        nn = 1;
+    end
     [aa payload] = get_NDBC_air(fname,pname);
+    if strcmp(payload,'none')
+        statcold = ' ';
+        continue
+    end
 %     if zz > 1 & files(zz).name(6:10) == stat
 %         nn = 2;
 %     end
@@ -127,4 +136,10 @@ for zz = 1:np
         fclose(fid);
         fclose(fid2);
     end
+    statcold = statc;
 end    
+delete('*.nc');
+cd('ADCP');
+delete('*.nc');
+cd ../
+rmdir('ADCP');

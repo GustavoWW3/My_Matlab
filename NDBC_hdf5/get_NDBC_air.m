@@ -45,18 +45,25 @@ dep = repmat(dep,[length(year) 1]);
 try
     wspd = ncread(fname,['/payload_1/anemometer_1/wind_speed']);
     payload = 'payload_1';
-    payatt = ncreadatt(fname,'/payload_1','description');
+catch
+    try
+        wspd = ncread(fname,['/payload_2/anemometer_1/wind_speed']);
+        payload = 'payload_2';
+    catch
+        payload = 'none';aa = 0;
+        return
+    end
+        
+end
+try
+    payatt = ncreadatt(fname,['/',payload],'description');
     np = length(payatt);sp = ['%',num2str(np),'s\n'];
-    fprintf(1,'Using payload_1\n');
+    fprintf(1,'Using %9s \n',payload);
     fprintf(1,sp,payatt);
 catch
-    wspd = ncread(fname,['/payload_2/anemometer_1/wind_speed']);
-    payload = 'payload_2';
-    payatt = ncreadatt(fname,'/payload_2','description');
-    np = length(payatt);sp = ['%',num2str(np),'s\n'];
-    fprintf(1,'Using payload_2\n');
-    fprintf(1,sp,payatt);
+    fprintf(1,'No Description of %9s \n',payload);
 end
+
 wspd_q = ncread(fname,['/',payload,'/anemometer_1/wind_speed_qc']);
 ii = wspd_q ~= 0;
 wspd(ii) = -99.99;

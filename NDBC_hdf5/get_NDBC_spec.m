@@ -43,8 +43,8 @@ try
 catch
     fprintf(1,'Wave Spectra information not available for station %5s\n', ...
         fname(end-21:end-17));
-    times = double(h5read(fname,'/time'));
-    c11 = repmat(-999.00,[length(freq) length(times)]);
+    time_spec = double(h5read(fname,'/time'));
+    c11 = repmat(-999.00,[length(freq) length(time_spec)]);
     c11_info.FillValue = 0.0;
 end
 
@@ -87,6 +87,12 @@ for zz = 1:size(c11,2)
         tm = 1./(fm + 1.0e-10);
         tp = 1./(fp + 1.0e-10);
     end
+    
+    r1(r1(:,zz) == c11_info.FillValue,zz) = 0;
+    r2(r2(:,zz) == c11_info.FillValue,zz) = 0;
+    alpha1(alpha1(:,zz) == c11_info.FillValue,zz) = 0;
+    alpha2(alpha2(:,zz) == c11_info.FillValue,zz) = 0;
+    
 %end
     
     if mp > 0
