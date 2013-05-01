@@ -71,6 +71,7 @@ for zz = 1:np
     else
         ff = ['n',statc,'_',yearc,'_',monc,'.onlns'];
         if exist(ff,'file')
+            statcold = ' ';
             continue
         end
         nn = 1;

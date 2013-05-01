@@ -67,7 +67,8 @@ end
 wspd_q = ncread(fname,['/',payload,'/anemometer_1/wind_speed_qc']);
 ii = wspd_q ~= 0;
 wspd(ii) = -99.99;
-if sum(ii) > 0
+ig = wspd_q == 0;
+if isempty(wspd(ig))
   wspd2 = ncread(fname,['/',payload,'/anemometer_2/wind_speed']);
   wspd_q2 = ncread(fname,['/',payload,'/anemometer_2/wind_speed_qc']);
   jj = wspd_q2(ii) == 0;
@@ -93,15 +94,17 @@ if ~isnan(anemh)
         anemh = data{2}(ii);
         fclose(fid2);
         if isempty(anemh)
-            ques = ['What is the anemometer height for buoy ',fname(end-21:end-17),': '];
-            anemh = input(ques);
+            %ques = ['What is the anemometer height for buoy ',fname(end-21:end-17),': '];
+            %anemh = input(ques);
+            anemh = 5.0;
             fid2 = fopen(dp,'a');
             fprintf(fid2,'%5s %7.2f\n',fname(end-21:end-17),anemh);
             fclose(fid2);
         end
     else
-        ques = ['What is the anemometer height for buoy ',fname(end-21:end-17),': '];
-        anemh = input(ques);
+        %ques = ['What is the anemometer height for buoy ',fname(end-21:end-17),': '];
+        %anemh = input(ques);
+        anemh = 5.0;
         fid2 = fopen(dp,'w');
         fprintf(fid2,'%5s %7.2f\n',fname(end-21:end-17),anemh);
         fclose(fid2);
@@ -113,7 +116,8 @@ wgus = ncread(fname,['/',payload,'/anemometer_1/wind_gust']);
 wgus_q = ncread(fname,['/',payload,'/anemometer_1/wind_gust_qc']);
 ii = wgus_q ~= 0;
 wgus(ii) = -99.99;
-if sum(ii) > 0
+ig = wgus_q == 0;
+if isempty(wgus(ig))
   wgus2 = ncread(fname,['/',payload,'/anemometer_2/wind_gust']);
   wgus_q2 = ncread(fname,['/',payload,'/anemometer_2/wind_gust_qc']);
   jj = wgus_q2(ii) == 0;
@@ -127,7 +131,8 @@ wdir = ncread(fname,['/',payload,'/anemometer_1/wind_direction']);
 wdir_q = ncread(fname,['/',payload,'/anemometer_1/wind_direction_qc']);
 ii = wdir_q ~= 0;
 wdir(ii) = -999.0;
-if sum(ii) > 0
+ig = wdir_q == 0;
+if isempty(wdir(ig))
   wdir2 = ncread(fname,['/',payload,'/anemometer_2/wind_direction']);
   wdir_q2 = ncread(fname,['/',payload,'/anemometer_2/wind_direction_qc']);
   jj = wdir_q2(ii) == 0;
@@ -147,8 +152,9 @@ atemp = atemp - 272.15;
 atemp(ii) = -99.99;
 ii = atemp_q ~= 0;
 atemp(ii) = -99.99;
+ig = atemp_q == 0;
 try
-    if sum(ii) > 0
+    if isempty(atemp(ig))
     atemp2 = ncread(fname,['/',payload,'/air_temperature_sensor_2/air_temperature']);
     atemp_q2 = ncread(fname,['/',payload,'/air_temperature_sensor_2/air_temperature']);
     jj = atemp_q2(ii) == 0;
@@ -178,11 +184,15 @@ barp = double(barp)./100;
 barp(ii) = -999.;
 ii = barp_q ~= 0;
 barp(ii) = -999.;
-if sum(ii) ~= 0
-    barp2 = ncread(fname,['/',payload,'/barometer_2/air_pressure_at_sea_level']);
-    barp_q2 = ncread(fname,['/',payload,'/barometer_2/air_pressure_at_sea_level_qc']);
-    jj = barp_q2(ii) == 0;
-    barp(ii(jj)) = barp2(ii(jj));
+ig = barp_q == 0;
+if isempty(barp(ig))
+    try
+        barp2 = ncread(fname,['/',payload,'/barometer_2/air_pressure_at_sea_level']);
+        barp_q2 = ncread(fname,['/',payload,'/barometer_2/air_pressure_at_sea_level_qc']);
+        jj = barp_q2(ii) == 0;
+        barp(ii(jj)) = barp2(ii(jj));
+    catch
+    end
 end
 
 aa = [year,mon,day,hour,min,lad,lam,las,lod,lom,los,dep,anemh, ...
