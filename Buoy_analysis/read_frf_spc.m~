@@ -20,13 +20,7 @@ function aa = read_frf_spc(cdir,fname)
 %      wdir   ARRAY   :  wave direction (deg) [1 x numofdates]
 %      freq   ARRAY   :  Frequency (Hz) [numfreq x 1]
 %      bw     ARRAY   :  Frequency Spacing (Hz) [numfreq x 1]
-%      ef     ARRAY   :  Energy Density (m^2/Hz) [numfreq x numofdates]
-%      a1     ARRAY   :  A1 direction  [numfreq x numofdates]
-%      a2     ARRAY   :  A2 direction  [numfreq x numofdates]
-%      b1     ARRAY   :  B1 direction  [numfreq x numofdates]
-%      b2     ARRAY   :  B2 direction  [numfreq x numofdates]
 %
-%--------------------------------------------------------------------------
 fid = fopen([cdir,fname]);
 data = textscan(fid,'%f%f%f%f%f%f%f%f%f%f',1);
 nn = 0;
