@@ -1,4 +1,4 @@
-function wis_read(bas,year,mon)
+function wis_read(bas,year,mon,slash)
 %
 %    ww3_read
 %      reads WIS post processing scripts and runs figure creators
@@ -66,7 +66,7 @@ timeseries_get(year,mon,level, ...
 year = str2num(filename1(1:4));
 mon = str2num(filename1(5:6));
 % load in plot information from -plot.mat file
-ff = [plotloc,'/',bas,'-',level,'-plot.mat'];
+ff = [plotloc,slash,bas,'-',level,'-plot.mat'];
 if ~exist(ff,'file')
     return
 end
@@ -80,10 +80,23 @@ loci = locb;
 for zz = 1:length(stats)
     % identify name of buoy
     buoyc = stats(zz).name(2:6);
-    % load in model results for buoy
-    wis = read_WIS_onlns(['ST',buoyc,'.onlns']);
     % load in buoy data
     buoy = read_NDBC_onlns(stats(zz).name);
+    % search directory for location file added 2013/05/06 
+    fb = [bdir,level,slash,'n',buoyc,'.locs'];
+    if exist(fb,'file') %%%%%%%%%NOT DONE
+        ab = load(fb);
+        vv1 = abs(repmat(str2num(buoy.lon),[size(ab,1) 1]) ...
+            - ab(:,2));
+        vv2 = abs(repmat(str2num(buoy.lat),[size(ab,1) 1]) ...
+            - ab(:,3));
+        [vv, idx] = min(sqrt(vv1.^2 + vv2.^2));
+        buoycw = num2str(ab(idx,1));
+    else
+        buoycw = buoyc;
+    end
+    % load in model results for buoy
+    wis = read_WIS_onlns(['ST',buoycw,'.onlns']);
     if ~isstruct(wis)
         continue
     end
