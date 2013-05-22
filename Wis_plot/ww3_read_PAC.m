@@ -44,7 +44,7 @@ storm = 'Pacific';
     track = [track,'-',level];
 %end
 
-ww3_cont_pac(storm,track,modelnm,plotloc)
+ww3_cont_PAC(storm,track,modelnm,plotloc)
 loc = pwd;
 
 % timeseries_get(filename1(1:4),filename1(5:6),level, ...

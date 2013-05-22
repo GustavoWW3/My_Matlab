@@ -19,7 +19,7 @@ for zz = 1:length(loc)
 %     ii = strfind(loc{zz},'level');
 %    copyfile([get_file,'*-LEVEL',loc{zz}(ii+5:end),'-MMt.tgz'],'.');
 %    copyfile([get_file,'*-LEVEL',loc{zz}(ii+5:end),'-ST-onlns.tgz'],'.');
-    ww3_read_PAC
+    %ww3_read_PAC
     
 end
 sdir = outfile(1:end-7);
@@ -47,9 +47,9 @@ for zz = 1:length(stats)
         continue
     end
     buoy = read_NDBC_onlns(stats(zz).name);
-    [tit1,saven] = PAC_names(buoyc,buoy,wis,track,level,res);
+    [tit1,saven] = PAC_names(buoyc,buoy,wis,track,res);
     timeplot_data(buoyc,buoy,wis,coord,tit1,saven,'m');
-    stats_calc(buoyc,buoy,wis,'WW3-ST4','PAC',level,'m');
+    stats_calc(buoyc,buoy,wis,'WW3-ST4',saven,'m');
     ii = str2num(buoyc) == compend;
     if ~isempty(ii)
         nn = nn + 1;

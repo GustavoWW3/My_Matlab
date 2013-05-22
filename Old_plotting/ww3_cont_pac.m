@@ -74,7 +74,7 @@ for qq = 1:8
         units = 'm';
     end
     unts = units;
-    fileout1=[titfile,'-',modelnm,track,'-',storm,mm]
+    fileout1=[titfile,'-',modelnm,'-',track,'-',storm,mm]
     titlnam1A=[modelnm,' ',storm,'  (Res ',num2str(resd),'\circ',...
         ' )'];
     titlnam1B=['  ',titlefld1,'  RESULTS:   ',track];
@@ -157,13 +157,20 @@ for qq = 1:8
     text(0.34,-.116,textcolbr,'FontWeight','bold','FontSize',8,'units','normalized');
     title(titlnam1,'FontWeight','bold');
     text(legboxx,legboxy,textstrt,'FontWeight','bold','FontSize',8,'units','normalized','BackgroundColor','w');
-    
-    pos=get(gcf,'Position');
-    pos(3:4)=[649,664];
-    set(gcf,'Position',pos,'PaperPositionMode','auto');
-    
-    print(gcf,'-dpng','-r600',fileout1); 
-    clf
+%     
+%     pos=get(gcf,'Position');
+%     pos(3:4)=[649,664];
+%     set(gcf,'Position',pos,'PaperPositionMode','auto');
+%     
+%     print(gcf,'-dpng','-r600',fileout1); 
+%     clf
+         set(gcf,'units','inches');
+     set(gcf,'papersize',[11 9]);
+     set(gcf,'paperposition',[1 1 9 7])
+%    set(gcf,'Position',pos,'PaperPositionMode','auto');
+    %set(gcf,'renderer','painters');
+    %print(gcf,'-dpdf','-r600',fileout1); 
+    saveas(gcf,fileout1,'png')
 end
 fclose(fid)
 end

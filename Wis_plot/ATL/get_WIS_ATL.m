@@ -1,7 +1,7 @@
 function get_WIS_ATL(outfile)
 
 %get_file = ['X:\Atlantic\Evaluation\WW3\Model\',outfile(end-6:end),'\'];
-get_file = ['/mnt/CHL_WIS_1/Atlantic/Evaluation/WW3/Model/',outfile(end-6:end),'/'];
+get_file = ['/mnt/CHL_WIS_1/ATL/Production/Model/',outfile(end-6:end),'/'];
 if ~exist(outfile,'dir')
     mkdir(outfile);
 end
@@ -23,17 +23,17 @@ for zz = 1:length(loc)
     cd (loc{zz})
     ii = strfind(loc{zz},'level');
     levn = loc{zz}(ii+5:end);
-    copyfile([get_file,'LEVEL',levn,'/*-LEVEL', ...
-        levn,'-MMt.tgz'],'.');
+    %copyfile([get_file,'LEVEL',levn,'/*-LEVEL', ...
+    %    levn,'-MMt.tgz'],'.');
     fnamest = [get_file,'LEVEL',levn,'/*-LEVEL', ...
             levn,'-ST-onlns.tgz'];
     blah = dir(fnamest);
     if ~isempty(blah)
-        copyfile(fnamest,'.');
+    %    copyfile(fnamest,'.');
     end
     wis_read('ATL',year,mon)
     
 end
-archive_atl(year,mon);
+%archive_atl(year,mon);
 system(['rm -rf ',outfile]);
 end

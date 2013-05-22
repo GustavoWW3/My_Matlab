@@ -34,7 +34,7 @@ for zz = 1:4
         mkdir(arcml);
     end
     system(['cp ',out,'/',loc{zz},'/*.tgz ',arcml]);
-    system(['cp ',out,'/',loc{zz},'/*.png ',arcfl]);
+    %system(['cp ',out,'/',loc{zz},'/*.png ',arcfl]);
     %system(['cp ',val,'/* ',arcv]);
 end
 val = [BASE,'/Validation/WIS/',yeardmon];
