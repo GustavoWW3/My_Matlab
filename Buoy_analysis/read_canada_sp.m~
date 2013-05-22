@@ -136,7 +136,7 @@ aa.tpb(:,nn) = bb.VTPK;
 data = fgetl(fid);data = fgetl(fid);
 clear freq df ef
 end
-delete([fdir,fname(zfile).name])
+delete(fname(zfile).name)
 end
 fclose(fid);
 %delete(fname);

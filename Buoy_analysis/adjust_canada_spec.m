@@ -1,6 +1,11 @@
 function aa = adjust_canada_spec(bb)
 
-ii = bb.hsb > 0.5;
+aa.stnum = bb.stnum;
+aa.lat = bb.lat;
+aa.lon = bb.lon;
+aa.dep = bb.dep;
+
+ii = bb.hsb > 0.25;
 aa.date = bb.date(ii,:);
 aa.timemat = bb.timemat(ii,:);
 aa.ef = bb.ef(:,ii);
@@ -36,9 +41,15 @@ if length(ip) > 1
         ip = ip(2);
     end
 end
-% if ip < 12
-%     ip = 12;
-% end
+if bb.stnum >= 45000 & bb.stnum < 46000
+    if ip < 17
+        ip = 17;
+    end
+else
+    if ip < 15
+        ip = 15;
+    end
+end
 
 aa.tp(ii) = 1.0/aa.freq(ip,ii);
 end

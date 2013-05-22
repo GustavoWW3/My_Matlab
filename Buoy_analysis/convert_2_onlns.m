@@ -1,5 +1,11 @@
 function bb = convert_2_onlns(aa)
-
+%
+%  convert a structured array to onlns array format
+%    created 05/15/2013 TJ Hesser
+%
+%  INPUT:
+%    aa.        STRUCT    : structured array with wave parameters
+%      
 for zz = 1:size(aa.c11,2)
     hmo = 4.0*sqrt(sum(aa.c11(:,zz).*aa.df));
     [fpp,fm,fp,mp] = periods(aa.c11(:,zz),aa.freq,aa.df);

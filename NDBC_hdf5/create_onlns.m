@@ -1,5 +1,11 @@
 function create_onlns(stat,year,mon,aa,sdir)
 
+if isunix
+    slash = '/';
+else
+    slash = '\';
+end
+
 onlform = ['%5s%6i%3i%3i%3i%3i%5i%5i%5i%5i%5i%5i%7.1f%7.2f%7.2f%7.2f', ...
     '%7.1f%7.2f%7.2f%7.1f%8.2f%8.2f%8.2f%8.2f%7.1f%7.1f%7.1f%7.1f', ...
     '%8.2f%8.2f%8.2f%8.2f%8.2f%10.4f%7.1f%7.1f%8.2f% 14.5E% 14.5E', ...
@@ -9,7 +15,7 @@ sp1form1 = ['%5s%6i%3i%3i%3i%3i'];
 if ~exist(sdir,'dir')
     mkdir(sdir);
 end
-fout = [sdir,'\n',stat,'_',year,'_',mon];
+fout = [sdir,slash,'n',stat,'_',year,'_',mon];
 foutone = [fout,'.onlns'];
 fid = fopen(foutone,'w');
 for qq = 1:size(aa,1)
