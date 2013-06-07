@@ -13,6 +13,6 @@ mb = read_mask([fdirb,'/',fnameb,'.mask'],Nxb,Nyb);
 px = [lon(1) lon(1) lon(end) lon(end) lon(1)];
 py = [lat(1) lat(end) lat(end) lat(1) lat(1)];
 
-m_new = modify_mask(m,lon,lat,px,py,mb,lonb,latb,0);
+m_new = modify_mask(m,lon,lat,px,py,mb,lonb,latb,1);
 
 write_ww3file([fdir1,'/',fname1,'.mask'],m_new);

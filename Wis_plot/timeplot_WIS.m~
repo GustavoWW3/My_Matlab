@@ -1,4 +1,4 @@
-function timeplot_WIS(buoyc,buoy,model,coord,tit1,saven,unt,track)
+function timeplot_WIS(buoyc,buoy,model,coord,tit1,saven,unt)
 
 idnum = 6;
 if strcmp(unt,'ft')
@@ -42,11 +42,8 @@ m_plot(lon,lat,'r.','MarkerSize',12)
 if track == 1
     yr = str2num(datestr(min(buoy.time),'yyyy'));
     mn = str2num(datestr(min(buoy.time),'mm'));
-    [lont,latt] = plot_hurr_tracks(yr,mn,coord(1:2),coord(3:4));
-    for jj = 1:size(lont,2)
-        m_plot(lont,latt)
-    end
-end    
+    [lonf,
+    
 
 hold off
 

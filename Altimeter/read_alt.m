@@ -10,7 +10,7 @@ if exist('H:\','dir')
     dird = 'H:\GlobWave';
     cd(dird);
 else
-    dird = '/media/Expansion Drive_/GlobWave/Altimeter';
+    dird = '/media/Expansion Drive/GlobWave/Altimeter';
     cd(dird);
 end
 sats = dir('*');

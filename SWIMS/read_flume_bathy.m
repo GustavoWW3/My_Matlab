@@ -1,5 +1,22 @@
 function aa = read_flume_bathy(slope,dx,fdir)
-
+%
+%   read SWIMS flume bathymetry and output structured array
+%     created 05/22/2013 by TJ Hesser
+%
+%   INPUT:
+%     slope    NUMERIC     : slope of flume either 25 or 50
+%     dx       NUMERIC     : grid spacing in meters
+%     fdir     STRING      : directory of bathy files
+%
+%   OUTPUT:
+%     aa       STRUCT      : structured array output
+%       xgrid  ARRAY       : grided x data [len(x) len(y)]
+%       ygrid  ARRAY       : grided y data [len(x) len(y)]
+%       zgrid  ARRAY       : grided z data [len(x) len(y)]
+%       x1d    ARRAY       : 1d x cut of bathy [1 len(x)]
+%       z1d    ARRAY       : 1d z cut of bathy [1 len(x)]
+%
+% -------------------------------------------------------------------
 if isunix 
     slash = '/';
 else

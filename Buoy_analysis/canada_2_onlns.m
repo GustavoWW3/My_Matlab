@@ -63,9 +63,9 @@ for mon = 1:12
     ndbct = [ndbcd,yearc,slash,monc,slash];
     
     nfile = [ndbct,'n',ndbcc,'_',yearc,'_',monnc,'.onlns'];
-    if exist(nfile,'file')
-        continue
-    end
+    %if exist(nfile,'file')
+    %    continue
+    %end
     
     
     %         if status == 0

@@ -122,6 +122,10 @@ for i = 1:N
     if (bound(i).level == 1)
                                                      
         %@@@ Determine if boundary lies completely outside the domain
+%         loc = bound(i).x > 180;
+%         bound(i).x(loc) = bound(i).x(loc) - 360;
+%         bound(i).west = min(bound(i).x);
+%         bound(i).east = max(bound(i).x);
         
         if (bound(i).west > lon_end || bound(i).east < lon_start ...     
               || bound(i).south > lat_end || bound(i).north < lat_start) 
