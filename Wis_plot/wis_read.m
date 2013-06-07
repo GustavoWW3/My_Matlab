@@ -103,7 +103,7 @@ for zz = 1:length(stats)
     % load in plotting information 
     eval(['[tit1,saven] = ',bas,'_names(buoyc,buoy,wis,track,level,res);']);
     % call plotting routine for timeplots
-    timeplot_WIS(buoyc,buoy,wis,coord,tit1,saven,'m');
+    timeplot_WIS(buoyc,buoy,wis,coord,tit1,saven,'m',1);
     % calculate and plot statistics 
     stats_calc(buoyc,buoy,wis,modelnm,saven,'m');
     % identify if buoy is part of a compendium plot
