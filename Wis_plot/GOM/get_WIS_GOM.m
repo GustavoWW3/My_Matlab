@@ -53,6 +53,6 @@ for zz = 1:length(locd)
     wis_read('GOM',year,mon,slash)
     
 end
-archive_gom(year,mon);
-system(['rm -rf ',outfile]);
+%archive_gom(year,mon);
+%system(['rm -rf ',outfile]);
 end

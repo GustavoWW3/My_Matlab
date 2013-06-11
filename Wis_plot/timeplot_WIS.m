@@ -45,7 +45,7 @@ if track == 1
     [lont,latt] = plot_hurr_tracks(yr,mn,coord(1:2),coord(3:4));
     lont(lont<0) = lont(lont<0) + 360;
     for jj = 1:size(lont,2)
-        m_plot(lont,latt)
+        m_plot(lont,latt,'k<-','linewidth',2,'markersize',6)
     end
 end    
 

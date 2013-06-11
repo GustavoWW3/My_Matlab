@@ -22,7 +22,7 @@ else
     fdir = 'X:\Hurricane_Tracks\';
 end
 year = num2str(yr);
-fname = ['Year.',year,'.ibtracs_all.v03r04.nc'];
+fname = [fdir,'Year.',year,'.ibtracs_all.v03r04.nc'];
 % get time from netcdf file
 time = ncread(fname,'source_time');
 

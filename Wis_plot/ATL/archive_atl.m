@@ -1,4 +1,4 @@
-function archive_gom(year,mon)
+function archive_atl(year,mon)
 
 if isunix
     slash = '/';
@@ -26,7 +26,7 @@ loc{4} = 'level3C';
 loc{5} = 'level3S1';
 loc{6} = 'level3S2';
 
-for zz = 2:length(loc)
+for zz = 1:length(loc)
     val = [out,slash,loc{zz},slash,'Validation',slash];
     arcv = [BASEA,slash,'Validation',slash,'WIS',slash,yeardmon, ...
         slash,loc{zz},slash];

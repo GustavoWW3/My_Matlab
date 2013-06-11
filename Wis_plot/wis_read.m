@@ -56,7 +56,7 @@ end
     track = [track,'-',level];
 
 % call contour plot of max mean
-wis_cont(track,modelnm,plotloc,bas)
+wis_cont(track,modelnm,plotloc,bas,1)
 loc = pwd;
 
 % go out to raid and grab any validation data sets
