@@ -1,8 +1,16 @@
-function canada_2_onlns(canada,year)
-
-ndbc = canada;
+function canada_2_onlns(canada,year,varargin)
+p = inputParser;
+p.addRequired('canada');
+p.addRequired('year');
+p.addOptional('ndbc',0);
+parse(p,canada,year,varargin{:})
+ndbc = p.Results.ndbc;
+if ndbc == 0
+    ndbc = canada;
+end
 if isunix
-    cdir = '/mnt/CHL_WIS_1/CANADIAN_BUOY_GRLAKES/';
+   cdir = '/mnt/CHL_WIS_1/CANADIAN_BUOY_PAC/';
+    %cdir = '/mnt/CHL_WIS_1/CANADIAN_BUOY_GRLAKES/';
     slash = '/';
 else
     cdir = 'X:\CANADIAN_BUOY_GRLAKES\';
@@ -81,13 +89,26 @@ for mon = 1:12
         bb1(:,5) = str2num(time(ii,11:12));
         [latd,latm,lats] = ddeg2dms(aa.lat);
         [lond,lonm,lons] = ddeg2dms(aa.lon);
+        if aa.lon < 0 & lond > 0
+            lond = -1.0*lond;
+        end
+        if aa.lat < 0 & latd > 0
+            latd = -1.0*latd;
+        end
         loc = [latd,abs(latm),round(abs(lats)),lond,abs(lonm),round(abs(lons))];
         bb1(:,6:11) = repmat(loc,size(bb1,1),1);
         bb1(:,12) = aa.dep;
-        bb1(:,13:15) = -99.99;
-        bb1(:,16) = -999.9;
-        bb1(:,17:18) = -99.99;
-        bb1(:,19) = -999.9;
+        bb1(:,13) = -99.99;
+        bb1(:,14) = aa.wspd(ii);
+        bb1(:,15) = aa.gust(ii);
+        bb1(:,16) = aa.wdir(ii);
+        bb1(:,17) = aa.airt(ii);
+        bb1(:,18) = aa.seat(ii);
+        bb1(:,19) = aa.atms(ii); 
+        %bb1(:,13:15) = -99.99;
+        %bb1(:,16) = -999.9;
+        %bb1(:,17:18) = -99.99;
+        %bb1(:,19) = -999.9;
         
         ab.c11 = aa.ef(:,ii);
         if any(strcmp('a1',fieldnames(aa)))

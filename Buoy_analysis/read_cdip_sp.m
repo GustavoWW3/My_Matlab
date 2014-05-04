@@ -53,7 +53,7 @@ timemat = datenum(str2double(date(1:4)),str2double(date(5:6)), ...
     str2double(date(7:8)),str2double(date(9:10)),str2double(date(11:12)),0);
 data = fgetl(fid);aa.stname = data(15:41);                                 % read 2nd line
 data = fgetl(fid);latc = data(10:20);lonc = data(22:32);                   % read 3rd line
-                  aa.sensor = data(49:70);                                 % record sensor type
+aa.sensor = data(49:70);                                 % record sensor type
 lat = str2double(latc(1:3)) + str2double(latc(4:8))./60;                   % calc latitude
 if strcmp(latc(11),'N')                                                    %   neg if south
     aa.lat = lat;

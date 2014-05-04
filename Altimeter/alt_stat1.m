@@ -1,8 +1,8 @@
-function [mod_out,mod_bias,mod_rmse,alt_out,blah,yearmon] = alt_stat1(alt_data,nlon,nlat)
+function [mod_out,mod_bias,mod_rmse,alt_out,blah,yearmon] = alt_stat1(alt_data)
 
-fname = ls('*-hss.tgz');
-untar(fname)
-yearmon = fname(1:6);
+fname = dir('*-hss.tgz');
+untar(fname.name)
+yearmon = fname.name(1:6);
 bbop = dir('*.hs');
 
 % mod_bias = cell(bbop-1);alt_out = cell(bbop-1); mod_rmse =cell(bbop-1);
@@ -10,6 +10,8 @@ bbop = dir('*.hs');
 for zz = 1:size(bbop,1)-1
     fid = fopen(bbop(zz).name);
     data = fgetl(fid);
+    nlon = str2num(data(48:50));
+    nlat = str2num(data(68:70));
     
     for jj = 1:nlat
         data = fscanf(fid,'%f',nlon);

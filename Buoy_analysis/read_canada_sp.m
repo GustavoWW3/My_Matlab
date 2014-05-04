@@ -62,6 +62,9 @@ aa.stnum = str2double(fname2(2:end));
 %data = textscan(fid,'%f%f%f%4.0f%1.0f%2.0f%1.0f%2.0f%f%f%f%f%f%f%f',1);
 data = fgetl(fid);
 aa.lat = str2num(data(1:10));aa.lon = str2num(data(11:20));
+if aa.lon > 0
+    aa.lon = -1.0 * aa.lon;
+end
 aa.dep = str2num(data(21:28));year = str2num(data(30:33));
 mon = str2num(data(34:35));day = str2num(data(36:37));
 hour = str2num(data(39:40));minu = str2num(data(41:42));
@@ -95,8 +98,12 @@ end
 dates = [yearc,monc,dayc,hourc,minc];
 
 for ii = 1:numopt
-   data = fscanf(fid,'%f',1);
-   data = fscanf(fid,'%4c',1);
+   datan = fscanf(fid,'%f',1);
+   datac = fscanf(fid,'%4c',1);
+   if strcmp(datac(4),'$')
+       datac(4) = 'S';
+   end
+   eval(['bb.',datac,' = datan;']);
 end
 
 for ii = 1:numpar
@@ -133,10 +140,29 @@ fmean = etot/(fmean + 1.0e-10);
 aa.tm(:,nn) = 1./fmean;
 aa.hsb(:,nn) = bb.VCAR;
 aa.tpb(:,nn) = bb.VTPK;
+if isfield(bb,'WSPD')
+    aa.wspd(:,nn) = bb.WSPD;
+    aa.wdir(:,nn) = bb.WDIR;
+    aa.gust(:,nn) = bb.GSPD;
+    aa.airt(:,nn) = bb.DRYT;
+    aa.seat(:,nn) = bb.SSTP;
+else
+    aa.wspd(:,nn) = -99.99;
+    aa.wdir(:,nn) = -999.;
+    aa.gust(:,nn) = -99.99;
+    aa.airt(:,nn) = -99.99;
+    aa.seat(:,nn) = -99.99;
+end
+if isfield(bb,'ATMS')
+    aa.atms(:,nn) = bb.ATMS;
+else
+    aa.atms(:,nn) = -999.9;
+end
+
 data = fgetl(fid);data = fgetl(fid);
 clear freq df ef
 end
-delete([fdir,fname(zfile).name])
+%delete([fdir,fname(zfile).name])
 end
 fclose(fid);
 %delete(fname);

@@ -9,14 +9,21 @@ latg = lats:res:latn;
 if exist('H:\','dir')
     dird = 'H:\GlobWave';
     cd(dird);
+elseif exist('/mnt/CHL_WIS_1/GlobWave/','dir');
+    dird = '/mnt/CHL_WIS_1/GlobWave/';
+    cd(dird);
 else
     dird = '/media/Expansion Drive/GlobWave/Altimeter';
     cd(dird);
+    
 end
 sats = dir('*');
 rr = 0;
-for qq = 1:size(sats,1)-4
-    sat = sats(qq+4).name;
+for qq = 3:size(sats,1)
+    if strcmp(sats(qq).name,'get_alt.m')
+        continue
+    end
+    sat = sats(qq).name;
     cd(sat)
     %% constant days associated with leap year
 daylp = [0,31,60,91,121,152,182,213,244,274,305,335];
@@ -84,13 +91,13 @@ while day ~= dayt2
     cd(dayc1)
    
     
-    gunzip *.gz
+    %gunzip *.gz
     
     pp = 1;
     files = dir('*.nc');
     for zz = 1:size(files,1)
         swq = ncread(files(zz).name,'swh_quality');
-        ii = find(swq < 1.0);
+        ii = find(swq < 3.0);
         lont = ncread(files(zz).name,'lon');
         latt = ncread(files(zz).name,'lat');
         tt = ncread(files(zz).name,'time');
@@ -113,7 +120,7 @@ while day ~= dayt2
     
 %% convert time to matlab time
 
-    delete *.nc
+    %delete *.nc
     day = day + 1;
     nn = nn + 1;
     cd ../

@@ -67,7 +67,7 @@ end
 % looks for output directory to determin if it exists
 if exist(cdiry,'dir')
     if isunix
-        ndbcd = ['/mnt/CHL_WIS_1/NDBC_CDIP'];
+        ndbcd = ['/mnt/CHL_WIS_1/NDBC_CDIP/'];
         %ndbcd = ['/home/thesser1/NDBC/'];
         ndbct = [ndbcd,yearc,'/',monc,'/'];
     else

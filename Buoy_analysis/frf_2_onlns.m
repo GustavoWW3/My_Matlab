@@ -1,18 +1,25 @@
-function frf_2_onlns(cdip,ndbc,year,mon)
-
+function frf_2_onlns(frf,ndbc,year,mon)
+%
+%    INPUT: 
+%       frf    : FRF buoy number should be 3 digits
+%       ndbc   : NDBC number, I can't remember what this is right now
+%       year   : year of processing
+%       mon    : month of processing
+%
 if isunix
     %cdir = '/mnt/CHL_WIS_1/CDIP/';
-    cdir = '/home/thesser1/NODC/';
+    cdir = '/mnt/CHL_WIS_1/FRF_WR/';
 else
-    cdir = 'X:\CDIP\';
+    cdir = 'X:\FRF_WR\';
 end
-if ischar(cdip)
-    cdipc = cdip;
+
+if ischar(frf)
+    frf = frf;
 else
-    if cdip < 100
-       cdipc = ['0',num2str(cdip)];
+    if frf < 100
+       frf = ['0',num2str(frf)];
     else
-       cdipc = num2str(cdip);
+       frf = num2str(frf);
     end
 end
 if ischar(ndbc)
@@ -40,18 +47,19 @@ else
     monc = mont(mon,:);
 end
 if isunix
-    fname = ['waverdr3630_',yearc,'_',monnc,'.spec'];
-    cdiry = [cdir,fname];
+    fname = ['waverdr',frf,'_',yearc,'_',monnc,'.spec'];
+    frfy = [cdir,fname];
 else
-    cdiry = [cdir,'spc_',yearc,'\',cdipc,'\',monc,'\01\'];
+    fname = ['waverdr',frf,'_',yearc,'_',monnc,'.spec'];
+    frfy = [cdir,fname];
 end
-if exist(cdiry,'file')
+if exist(frfy,'file')
     if isunix
         %ndbcd = ['/mnt/CHL_WIS_1/NDBC_CDIP'];
-        ndbcd = ['/home/thesser1/NDBC/'];
+        ndbcd = ['/mnt/CHL_WIS_1/NDBC_FRF'];
         ndbct = [ndbcd,yearc,'/',monc,'/'];
     else
-        ndbcd = ['X:\NDBC_CDIP\'];
+        ndbcd = ['X:\NDBC_FRF\'];
         ndbct = [ndbcd,yearc,'\',monc,'\'];
     end
     
@@ -82,7 +90,7 @@ if exist(cdiry,'file')
     bb1(:,19) = -999.9;
     
     ab.c11 = aa.ef;
-    ab.a0 = aa.ef./pi;
+    ab.a0 = aa.ef.*pi;
     if any(strcmp('a1',fieldnames(aa)))
         ab.a1=aa.a1;ab.a2=aa.a2;
         ab.b1 = aa.b1;ab.b2 = aa.b2;
