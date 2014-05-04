@@ -19,11 +19,23 @@ if ~ischar(mon)
     end
 end
 yearm = [year,'-',mon];
-dir1 = [mdir,slash,yearm,slash,level,slash];
-cd(dir1);
+
+    dir1 = [mdir,slash,yearm,slash,level,slash];
+    try
+        cd(dir1);
+    catch
+        dir1 = [mdir,slash,yearm,slash];
+        cd(dir1);
+    end
 file = dir('*ST-onlns.tgz');
 if size(file,1) == 0
-    file = dir('*STNS_*_onlns.tgz');
+   file = dir('*STNS_*_onlns.tgz');
+end
+if size(file,1) == 0
+    file = dir('*STNS*ONLNS.tgz');
+end
+if size(file,1) == 0
+    file = dir('*ST_ONLNS.tgz');
 end
 if size(file,1) == 0
     return
@@ -35,8 +47,8 @@ dirname = [dir1,'Validation',slash];
 if ~exist(dirname,'dir')
     mkdir(dirname);
 end
-copyfile('*.onlns',dirname);
-delete *.onlns
+movefile('*.onlns',dirname);
+%delete *.onlns
 cd(dirname)
 
 load([pdir,slash,basin,'-',level,'-buoy.mat']);
@@ -51,6 +63,20 @@ for zz = 1:size(stations,1)
     end
     %cd('../')q
     
+end
+
+candir = [rdir,'NDBC_Canada',slash,year,slash,month{str2num(mon)}];
+if exist(candir,'dir');
+  cd(candir);
+for zz = 1:size(stations,1)
+    %cd(num2str(stations(zz,1)));
+    fname=['n',num2str(stations(zz,1)),'_',year,'_',mon,'.onlns'];
+    if exist(fname,'file');
+        copyfile(fname,dirname);
+    end
+    %cd('../')q
+    
+end
 end
 % cd([rdir,'/CANADIAN_BUOY_GOM/']);
 % for zz = 1:size(stations,1)

@@ -1,4 +1,41 @@
-function timeplot_WIS(buoyc,buoy,model,coord,tit1,saven,unt,track)
+function timeplot_WIS(buoyc,buoy,model,coord,tit1,saven,unt,track,fillm)
+%
+%   timeplot_WIS
+%    created by TJ Hesser
+%
+%  INPUT:
+%    buoyc           STRING    : name of buoy
+%    buoy            STRUCT    :
+%    model           STRUCT    :
+%    coord           ARRAY     : [lonw lone lats latn]
+%    tit1            STRING    : title of plot
+%    saven           STRING    : filename of figures
+%    unt             STRING    : units ex. 'ft' or 'm'
+%    track           NUMERIC   : include hurricane tracks no=0, yes=1
+%    fillm           NUMERIC   : fill plots for Great Lakes no=0, yes=1
+%
+%    Both buoy and model have the same structure with:
+%     .time        Matlab time
+%     .lon         Longitude
+%     .lat         Latitude
+%     .wspd        Wind Speed
+%     .wdir        Wind Direction
+%     .wvht        Wave Height
+%     .tpp         Peak Period
+%     .tm1         Mean Period
+%     .wavd        Wave Direction
+% -------------------------------------------------------------------------
+shr_x(1,1) = coord(1);
+shr_x(2,1) = coord(2);
+shr_x(3,1) = coord(2);
+shr_x(4,1) = coord(1);
+shr_x(5,1) = coord(1);
+
+shr_y(1,1) = coord(3);
+shr_y(2,1) = coord(3);
+shr_y(3,1) = coord(4);
+shr_y(4,1) = coord(4);
+shr_y(5,1) = coord(4);
 
 idnum = 6;
 if strcmp(unt,'ft')
@@ -18,7 +55,9 @@ set(f,'inverthardcopy','off','color','white');
 orient tall
 subplot(8,3,[2 6])
 m_proj('mercator','long',[coord(1) coord(2)],'lat',[coord(3) coord(4)]);
-%m_patch(shr_x,shr_y,[.0 .5 .0]);
+if fillm == 1
+    m_patch(shr_x,shr_y,[.0 .5 .0]);
+end
 m_gshhs_i('patch',[.0 .5 .0],'edgecolor','k');
 hcst=findobj(gca,'Tag','m_gshhs_i');
 set(hcst,'HandleVisibility','off');
@@ -30,18 +69,21 @@ hgrd=hcc(k);
 hp=findobj(gca,'Tag','m_grid_color');
 set(hp,'Visible','off');
 set(hgrd,'HandleVisibility','off');
-k2=strmatch('m_gshhs_i',tags);
-h_water=findobj(hcc(k2),'FaceColor',[1,1,1]);
-set(h_water,'FaceColor','none');
+if fillm == 0
+    k2=strmatch('m_gshhs_i',tags);
+    h_water=findobj(hcc(k2),'FaceColor',[1,1,1]);
+    set(h_water,'FaceColor','none');
+end
 hold on
-lon = model.lon;lat = model.lat;
+%lon = model.lon;lat = model.lat;
+lon = buoy.lon;lat = buoy.lat;
 lon(lon < 0) = lon(lon < 0) + 360;
 %m_plot(track(:,1),track(:,2),'b-','LineWidth',1);
 m_plot(lon,lat,'r.','MarkerSize',12)
 
 if track == 1
-    yr = str2num(datestr(min(buoy.time),'yyyy'));
-    mn = str2num(datestr(min(buoy.time),'mm'));
+    yr = str2num(datestr(min(model.time),'yyyy'));
+    mn = str2num(datestr(min(model.time),'mm'));
     [lont,latt] = plot_hurr_tracks(yr,mn,coord(1:2),coord(3:4));
     lont(lont<0) = lont(lont<0) + 360;
     for jj = 1:size(lont,2)
@@ -58,8 +100,12 @@ if isempty(buoy.wvht(ii))
     close(f);
     return
 end
-plot(buoy.time(ii),buoy.wvht(ii),'r.',model.time,model.wvht,'b', ...
+try
+    plot(buoy.time(ii),buoy.wvht(ii),'r.',model.time,model.wvht,'b', ...
     'Markersize',8,'linewidth',1);
+catch
+    1;
+end
 grid;
 set_WIS_xtick(min(model.time),max(model.time),idnum);
 ylabel(['H_{s} (',unit{1},')'],'fontweight','bold');
@@ -79,8 +125,11 @@ plot(buoy.time(ii),buoy.tpp(ii),'r.',model.time,model.tpp,'b', ...
 grid;
 set_WIS_xtick(min(model.time),max(model.time),idnum);
 ylabel('T_{p} (s)','fontweight','bold');
-set_WIS_ytick(0,max(max(buoy.tpp(ii)),max(model.tpp)));
-
+if isempty(buoy.tpp(ii))
+   set_WIS_ytick(0,max(model.tpp))
+else
+   set_WIS_ytick(0,max(max(buoy.tpp(ii)),max(model.tpp)));
+end
 
 pt(3) = subplot(8,3,[13 15]);
 ii = buoy.tm1 ~= -999 & buoy.time >= model.time(1) & ...
@@ -90,8 +139,11 @@ plot(buoy.time(ii),buoy.tm1(ii),'r.',model.time,model.tm1,'b', ...
 grid;
 set_WIS_xtick(min(model.time),max(model.time),idnum);
 ylabel('T_{m} (s)','fontweight','bold');
-set_WIS_ytick(0,max(max(buoy.tm1(ii)),max(model.tm1)));
-
+if isempty(buoy.tm1(ii))
+   set_WIS_ytick(0,max(model.tm1))
+else
+   set_WIS_ytick(0,max(max(buoy.tm1(ii)),max(model.tm1)));
+end
 
 pt(4) = subplot(8,3,[16 18]);
 ii = buoy.wavd ~= -999 & buoy.time >= model.time(1) & ...
@@ -112,8 +164,11 @@ plot(buoy.time(ii),buoy.wspd(ii),'r.',model.time,model.wspd,'b', ...
 grid;
 set_WIS_xtick(min(model.time),max(model.time),idnum);
 ylabel(['WS (',unit{5},')'],'fontweight','bold');
-set_WIS_ytick(0,max(max(buoy.wspd(ii)),max(model.wspd)));
-
+if isempty(buoy.wspd(ii))
+   set_WIS_ytick(0,max(model.wspd))
+else
+   set_WIS_ytick(0,max(max(buoy.wspd(ii)),max(model.wspd)));
+end
 
 pt(6) = subplot(8,3,[22 24]);
 ii = buoy.wdir ~= -999 & buoy.time >= model.time(1) & ...

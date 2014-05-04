@@ -28,7 +28,7 @@ kwnd=find(a(:,15) <= -999);
 clear u10buoy; clear air_sea;
 u10buoy=zeros(size(a(:,1)));
 ele=zeros(size(a(:,1)));
-ielez=find(a(:,14) == 0.0);
+ielez=find(a(:,14) <= 0.0);
 if isempty(ielez)
     ele=a(:,14);
 else
@@ -42,7 +42,7 @@ if temdifa > 0.5*totobsB | temdifs > 0.5*totobsB
 end
 
 thresh=floor(0.05*length(u10buoy));
-if length(iwnd) < thresh
+if length(iwnd) < thresh | length(iwnd) < 10
     u10buoy(1:length(u10buoy)) = NaN;
     windB(1:length(u10buoy)) = NaN;
 else
@@ -72,6 +72,7 @@ nowndB=find(windB == 0);
 iwdB=length(nowndB);
 iwdB2 = find(a(:,17) >= 0);
 
-aa = struct('time',timbuoy,'lon',lonb,'lat',latb,'wvht',hgtB,'tpp', ...
-    tppfB,'tm1',tmnB,'wavd',wavdB, ...
+aa = struct('time',timbuoy,'lonc',lonb,'latc',latb,'lon',str2num(lonb), ...
+    'lat',str2num(latb),'depth',DEPout,'wvht',hgtB,'tpp',tppfB,'tm1', ...
+    tmnB,'wavd',wavdB, ...
     'wspd',u10buoy,'wdir',windB);

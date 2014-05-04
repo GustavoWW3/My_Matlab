@@ -50,6 +50,7 @@ aa.zgrid = depth;
 center = round(size(aa.xgrid,1)/2);
 aa.x1d = X(center,:);
 aa.z1d = depth(center,:);
+aa.dx = dx;
 
 
 

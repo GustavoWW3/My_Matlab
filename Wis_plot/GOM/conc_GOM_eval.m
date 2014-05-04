@@ -1,7 +1,7 @@
 function aa = conc_GOM_eval(buoy,model,level,yeard,mon1,mon2)
 bas = 'GOM';
 if isunix
-    cc = ['/mnt/CHL_WIS_1/GOM/Evaluation/',model,'/Validation/WIS/'];
+    cc = ['/mnt/CHL_WIS_1/GOM/Production/Validation/WIS/'];
 else
     cc = ['X:\GOM\Evaluation\',model,'\Validation\WIS\'];
 end

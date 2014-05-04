@@ -12,7 +12,7 @@
 wamfile = dir('*.dep');
 
 % Read WAM *.dep file and send back grid information
-[dep,deptext,lat,lon] = read_WAM_dep(wamfile(1).name);
+[dep,lat,lon] = read_WAM_dep(wamfile(1).name);
 
 % Create mask with depth set to 1 and land set to 0
 mask = dep;

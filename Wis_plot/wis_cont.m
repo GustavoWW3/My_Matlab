@@ -1,12 +1,33 @@
-function wis_cont(track,modelnm,plotloc,bas,trackp)
+function wis_cont(track,modelnm,plotloc,bas,varargin)
 %  map contour
+p = inputParser;
+p.addRequired('track');
+p.addRequired('modelnm');
+p.addRequired('plotloc');
+p.addRequired('bas');
+p.addOptional('trackp',0);
+p.addOptional('iceC','000');
+parse(p,track,modelnm,plotloc,bas,varargin{:});
+
+trackp = p.Results.trackp;
+iceC = p.Results.iceC;
+ice_cover = 0;
+if ~strcmp(iceC,'000')
+    ice_cover = str2double(iceC(1:2));
+    iceflg = iceC(3:3);
+    if strcmp(iceflg,'N')
+        iceflg2 = 'NIC';
+    else
+        iceflg2 = 'CIS';
+    end
+end
 
 project_in = 'mercator';
 storm = bas;
-%colposit = [0.2982 0.19 0.4500 0.0300];
-%legboxx=0.02;
-%legboxy=0.08;
-load([plotloc,bas,'-',track(9:end),'.mat']);
+ii = strfind(track,'-');
+ip = ii(end);
+load([plotloc,bas,'-',track(ip+1:end),'.mat']);
+
 % open max mean file and read header information
 fname = dir('Max*.dat');
 fid = fopen(fname.name,'r');
@@ -30,15 +51,19 @@ else
     xlatn = header{6};
     xlonw = header{7};
     xlone = header{8};
-    nlon = (xlone - xlonw)/resd + 1;
-    nlat = (xlatn - xlats)/resd + 1;
+    %nlon = (xlone - xlonw)/resd + 1;
+    %nlat = (xlatn - xlats)/resd + 1 ;
     qr = [3,5,7];
 end
-    
+dats = num2str(time1);
+yr1 = str2num(dats(1:4));mn1 = str2num(dats(5:6));    
+dats = num2str(time2);
+yr2 = str2num(dats(1:4));mn2 = str2num(dats(5:6));
+
 
 xx = [xlonw:resd:xlone];
 yy = [xlats:resd:xlatn];
-
+nlon = length(xx);nlat = length(yy);
 
 fieldname{1} ='Maximum Total   Height H_{mo} ';
 displname{1} ='H_{total}  ';
@@ -68,7 +93,6 @@ fieldname{8} ='Mean Winds   Speed U_{10} ';
 displname{8} ='U_{10} ';
 filename{8} ='U10TOT';
 
-%units = 'm';
 %read max and mean wave height information for total, windsea, and swell
 for qq = 1:8
     if ~isempty(strfind(fname.name,'ww3'))
@@ -100,21 +124,24 @@ for qq = 1:8
     if qq > 6
         units = 'm/s';
     else
-        units = 'm';
+        units = 'm';    
     end
     unts = units;
-    fileout1=[titfile,'-',modelnm,'-',track,'-',storm,mm]
+    track = strrep(track,'_','-');
+    fileout1=[titfile,'-',modelnm,'-',track,'-',storm,mm];
+    fprintf(1,'File name : %s\n',fileout1);
     titlnam1A=[modelnm,' ',storm,'  (Res ',num2str(resd),'\circ',...
         ' )'];
     titlnam1B=['  ',titlefld1,'  RESULTS:   ',track];
     titlnam1=[{titlnam1A};{titlnam1B}];
+
 %Start plotting routine
     RANGMM = max(max(hs{qq}));
     disp([titlefld1,'  ',num2str(RANGMM)]);
     interv=0.005*RANGMM;
     v=[-1,0:interv:RANGMM];
     
-    for jj = 1:nlat
+    for jj = 1:nlat-1
         for ii = 1:nlon
             if (hs{qq}(jj,ii) >= 0.0 && hs{qq}(jj,ii) <= v(8))
                 hs{qq}(jj,ii) = v(8);
@@ -127,11 +154,7 @@ for qq = 1:8
       [imax jmax] = find(hs{qq} == RANGMM);
       
     load cmap.mat
-    f = figure('visible','on');
-    %set(f,'color','white')
-    %set(f,'TextFontSize',10,'AxesFontSize',10);
-    %set(f,'AxesFontName','Helvetica','TextFontName','Helvetica');
-    %f = figure('visible','on');
+    f = figure('visible','off');
     colormap(cmap)
     m_proj(project_in,'long',[xlonw xlone],'lat',[xlats xlatn]);
 
@@ -175,17 +198,28 @@ for qq = 1:8
     end
     
     if trackp == 1
-        yr = str2num(track(1:4));
-        mn = str2num(track(6:7));
-        [lont,latt] = plot_hurr_tracks(yr,mn,[xlonw xlone],[xlats xlatn]);
+        %yr = str2num(track(1:4));
+        %mn = str2num(track(6:7));
+        %%%%% ------------------------------------------------------------
+        % work in progress TJH 02/21/14
+%         yr = [yr1:1:yr2];
+%         mn = [mn1:1:mn2];
+%         nyears = (yr2 - yr1) + 1;
+%         nmons = (mn2 - mn1) + 1;
+%         for iyr = 1:nyears
+%             for imon = 1:nmons
+        [lont,latt] = plot_hurr_tracks(yr1,mn1,[xlonw xlone],[xlats xlatn]);
         if max(xlonw,xlone)  > 180
             lont(lont<0) = lont(lont<0) + 360;
         end
+%             end
+%         end
+%
+%%%%% ---------------------------------------------------------------------
         for jj = 1:size(lont,2)
             m_plot(lont(:,jj),latt(:,jj),'k<-','markersize',6,'linewidth',2)
         end
     end 
-    
     
     time1c = num2str(time1);
     time2c = num2str(time2);
@@ -196,51 +230,42 @@ for qq = 1:8
     textstg3=['DATE: ',time1c(1:10),'-',time2c(1:10)];
     textstrt=[{textstg1};{textstg2};{textstg3}];
     
+    if ice_cover > 0
+        icef=['ICEFLD_',track(1:7),'.CUM'];
+        if ~exist(icef,'file')
+            icef = ['ICEFLD_',track(1:4),'_',track(6:7),'.CUM'];
+        end
+        if ~exist(icef,'file')
+            icef = ['ICEFLD-',track(1:6),'.CUM'];
+        end
+        fid100 = fopen(icef);
+        data = textscan(fid100,'%f%f%f');
+        fclose(fid100);
+        sLong = data{1};sLat = data{2};zero7 = data{3};
+        ice=zero7 == 1;
+        m_plot(sLong(ice),sLat(ice),'s','Color',[0.9 0.9 0.9], ...
+            'MarkerFaceColor',[0.9 0.9 0.9],'MarkerEdgeColor',[0.9 0.9 0.9],'MarkerSize',4);
+        textstg4 = ['ICE Conc (',iceflg2,'):  ',num2str(ice_cover), '%  '];
+        textstrt=[{textstg1};{textstg2};{textstg3};{textstg4}];
+    end
     
+  
     hcolmax=colorbar('horizontal');
     set(hcolmax,'Position',colposit,'FontSize',10,'fontweight','bold')
     textcolbr=[titlefld1,'  [',unts,']'];
-    text(colortext(1),colortext(2),textcolbr,'FontWeight','bold', ...
+    cctext = text(colortext(1),colortext(2),textcolbr,'FontWeight','bold', ...
         'FontSize',10,'units','normalized');
     title(titlnam1,'FontWeight','bold','fontsize',10);
-    text(legboxx,legboxy,textstrt,'FontWeight','bold','FontSize',10, ...
+    legtext = text(legboxx,legboxy,textstrt,'FontWeight','bold','FontSize',10, ...
         'units','normalized','BackgroundColor','w');
     
-%    pos=get(f,'Position');
-%    pos(3:4)=[649,664];
-%    pos(3:4) = [1081 1106];
-%    pos(3:4) = [1298 1328];
-%     set(f,'units','inches');
      set(f,'units','inches');
-     %set(f,'Position',[0 0 6.75 7.50]);
      set(f,'Position',figpos);
-     %set(f,'papersize',[9 11]);
      set(f,'papersize',figpos(3:4));
      set(f,'PaperPosition',figpos);
-%     set(f,'paperposition',[0.48 1.65 7.76 7.92])
-%     set(f,'paperposition',[1 1 15 18]);
-%     set(f,'units','inches','Position',[0 0 7.21 7.37])
-%     pos = getpixelposition(f);
-%     resol = get(0,'ScreenPixelsPerInch');
-%     set(f,'Paperunits','inches','papersize',pos(3:4)/resol,'paperposition',[0 0 pos(3:4)/resol])
-%      set(f,'Paperunits','inches','papersize',[1.5*8.5 1.5*11],'paperposition',[0 0 1.5*7.21 1.5*7.37]);
-%     set(f,'Position',pos,'PaperPositionMode','manual');
-%      set(f,'position',[0 0 7.21*2*resol 7.37*2*resol]);
-%    set(gcf,'Position',pos,'PaperPositionMode','auto');
-%     set(f,'Position',pos);
      set(f,'PaperPositionMode','manual');
-%set(gcf,'renderer','painters');
     print(f,'-dpng','-r0','-painters',fileout1);
-    %export_fig(f,fileout1,'-png','-r0','-painters');
-    %exportfig(f,[fileout1,'.png'])
-    %    saveas(f,fileout1,'png')
-    %clf;clear f
     close(f);clear f
 end
 fclose(fid);
-% pdfn = dir('*.pdf');
-% for zz = 1:size(pdfn,1)
-%     name = pdfn(zz).name;
-%     system(['convert ',name,' ',name(1:end-3),'png']);
-% end
 end

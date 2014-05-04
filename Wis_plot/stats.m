@@ -157,9 +157,17 @@ else
     ra = corr(u) ; 
     rcu = ra(1,2) ; 
 end
-ra = corr(h) ; rch = ra(1,2) ;
-ra = corr(p) ; rcp = ra(1,2) ; 
-if isempty(q)
+if size(h,1) == 1
+    rch(1,1) = 0.;
+else
+    ra = corr(h) ; rch = ra(1,2) ;
+end
+if size(p,1) == 1;
+    rcp(1,1) = 0.;
+else
+    ra = corr(p) ; rcp = ra(1,2) ;
+ end
+if size(q,1) == 1;
     rcq=0.
 else
     ra = corr(q) ; rcq = ra(1,2) ;

@@ -42,7 +42,7 @@ for zz = 1:length(loc)
         mkdir(arcml);
     end
     if isunix
-   	system(['cp ',out,slash,loc{zz},slash,'*.tgz ',arcml]);
+        system(['cp ',out,slash,loc{zz},slash,'*.tgz ',arcml]);
     	system(['cp ',out,slash,loc{zz},slash,'*.png ',arcfl]);
     	system(['cp ',val,slash,'* ',arcv])
     else

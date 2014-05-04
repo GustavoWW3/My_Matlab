@@ -1,15 +1,43 @@
-function stats_calc(buoyc,buoy,model,modelv,saven,unt)
-figure(1);
-clf
+function stats_calc(buoyc,buoy,model,modelv,saven,simname,unt)
+%
+%     stats_calc
+%      created TJ Hesser
+% 
+%   INPUT:
+%     buoyc         STRING      :name of buoy
+%     buoy          STRUCT      :
+%     model         STRUCT      :
+%     modelv        STRING      : model name and version
+%     saven         STRING      : file name for figures
+%     simname       STRING      : description of sim for title 
+%     unt           STRING      : units ex. 'ft' or 'm'
+%
+%   Structured format:
+%     .time        Matlab time
+%     .lon         Longitude
+%     .lat         Latitude
+%     .wspd        Wind Speed
+%     .wdir        Wind Direction
+%     .wvht        Wave Height
+%     .tpp         Peak Period
+%     .tm1         Mean Period
+%     .wavd        Wave Direction
+% -------------------------------------------------------------------------
+
 tol=11;
 if strcmp(unt,'ft')
-    buoy.WVHT = buoy.wvht * 3.281;
-    buoy.WSPD = buoy.wspd * 2.23694;
+    buoy.wvht = buoy.wvht * 3.281;
+    buoy.wspd = buoy.wspd * 2.23694;
     model.wvht = model.wvht .* 3.281;
     model.wspd = model.wspd .* 2.23694;
     names = {'H_{mo} (ft)';'T_{p} (s)';'T_{m} (s)';'WS (mi/hr)';'WD (deg)'};
 else
     names = {'H_{mo} (m)';'T_{p} (s)';'T_{m} (s)';'WS (m/s)';'WD (deg)'};
+end
+ii = buoy.wvht >= 0 & buoy.time >= model.time(1) & ...
+        buoy.time <= model.time(end);
+if isempty(buoy.wvht(ii))
+    return
 end
 %
 %  More rows goes first in the arguement.
@@ -30,6 +58,10 @@ AM=[model.time(kkM),model.wspd(kkM),model.wdir(kkM),model.wvht(kkM),...
 
 saveout = ['timepair-',saven,'-',buoyc];
 save(saveout,'AB','AM');
+
+if size(AB,1) < 5
+    return
+end
 
 [se,sd]=stats(AB,AM);
 
@@ -61,7 +93,8 @@ for ii = 1:3
     name2 = ['Buoy ',names{ii}];
     ylabel(name1);
     xlabel(name2);
-    titchar1=[modelv,' at ',buoyc];
+    titchar1=['BUOY: ',buoyc,'  ',simname];
+    %titchar1=[modelv,' at ',buoyc];
     if ii == 1
         title(titchar1);
     end
@@ -81,7 +114,8 @@ for ii = 1:3
     axis('square')
     ylabel(name1)
     xlabel(name2)
-    titchar2=[modelv,' vs ',buoyc,' Q-Q '];
+    titchar2=['BUOY: ',buoyc,'  ',simname,' Q-Q'];
+    %titchar2=[modelv,' vs ',buoyc,' Q-Q '];
     if ii == 1
         title(titchar2);
     end
@@ -105,7 +139,8 @@ if ~isempty(iwsg)
     yname = [modelv,' WS'];
     ylabel(yname);
     xlabel('Buoy WS');
-    titchar1=[modelv,' at ',buoyc];
+    %titchar1=[modelv,' at ',buoyc];
+    titchar1=['BUOY: ',buoyc,'  ',simname];
     title(titchar1);
     str(1) = {['No Obs = ',int2str(length(iwsg))]};
     str(2) = {['Bias   = ',num2str(se(1,3))]};
@@ -123,7 +158,8 @@ if ~isempty(iwsg)
     axis('square');
     ylabel(yname);
     xlabel('Buoy WS');
-    titchar2=[modelv,' vs ',buoyc,' Q-Q'];
+    %titchar2=[modelv,' vs ',buoyc,' Q-Q'];
+    titchar2=['BUOY: ',buoyc,'  ',simname,' Q-Q'];
     title(titchar2);
     %
     %
@@ -135,7 +171,8 @@ if ~isempty(iwsg)
     ytype2 = [modelv,' WD'];
     ylabel(ytype2);
     xlabel('Buoy WD');
-    titchar1=[modelv,' at ',buoyc];
+    titchar1=['BUOY: ',buoyc,'  ',simname];
+    %titchar1=[modelv,' at ',buoyc];
     
     str(1) = {['No Obs = ',int2str(length(iwdg))]};
     str(2) = {['Scl X   = ',num2str(sd(1,1))]};

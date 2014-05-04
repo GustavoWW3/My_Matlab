@@ -191,6 +191,9 @@ if isempty(barp(ig))
         barp_q2 = ncread(fname,['/',payload,'/barometer_2/air_pressure_at_sea_level_qc']);
         jj = barp_q2(ii) == 0;
         barp(ii(jj)) = barp2(ii(jj));
+        ii = barp == barp_info.FillValue;
+        barp = barp./100;
+        barp(ii) = -999.;
     catch
     end
 end

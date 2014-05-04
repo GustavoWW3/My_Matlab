@@ -1,4 +1,4 @@
-function aa = flume_eval(fdir)
+function bb = flume_eval(fdir)
 
 ff = dir([fdir,'*.dat']);
 
@@ -15,4 +15,6 @@ aa.dt = aa.time(2) - aa.time(1);
 aa = upcrossing(aa);
 aa = spec_analy(aa);
 aa = reflection(aa);
+
+bb(zz) = aa;
 end
